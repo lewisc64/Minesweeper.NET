@@ -39,6 +39,15 @@ Class Cell
 
     Function handle() As String
         Dim clicked As Boolean = False
+
+        If cooldown > 0 Then
+            cooldown -= 1
+        End If
+
+        If flagged And dug Then
+            dug = False
+        End If
+
         If Not dug Then
             clicked = False 'button.handle()
 
@@ -51,14 +60,12 @@ Class Cell
                         clicked = True
                     ElseIf vbgame.mouse.Button = vbgame.mouse_right Then
                         If cooldown <= 0 Then
-                            cooldown = 10
+                            cooldown = 5
                             If flagged Then
                                 flagged = False
                             Else
                                 flagged = True
                             End If
-                        Else
-                            cooldown -= 1
                         End If
                     End If
                 End If

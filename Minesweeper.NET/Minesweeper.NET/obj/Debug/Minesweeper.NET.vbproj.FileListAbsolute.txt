@@ -1,1 +1,10 @@
 C:\Users\pc\Desktop\coding\GitHub\Minesweeper.NET\Minesweeper.NET\Minesweeper.NET\bin\Debug\Minesweeper.NET.exe.config
+C:\Users\pc\Desktop\coding\GitHub\Minesweeper.NET\Minesweeper.NET\Minesweeper.NET\bin\Debug\Minesweeper.NET.exe
+C:\Users\pc\Desktop\coding\GitHub\Minesweeper.NET\Minesweeper.NET\Minesweeper.NET\bin\Debug\Minesweeper.NET.pdb
+C:\Users\pc\Desktop\coding\GitHub\Minesweeper.NET\Minesweeper.NET\Minesweeper.NET\bin\Debug\Minesweeper.NET.xml
+C:\Users\pc\Desktop\coding\GitHub\Minesweeper.NET\Minesweeper.NET\Minesweeper.NET\obj\Debug\Minesweeper.NET.Form1.resources
+C:\Users\pc\Desktop\coding\GitHub\Minesweeper.NET\Minesweeper.NET\Minesweeper.NET\obj\Debug\Minesweeper.NET.Resources.resources
+C:\Users\pc\Desktop\coding\GitHub\Minesweeper.NET\Minesweeper.NET\Minesweeper.NET\obj\Debug\Minesweeper.NET.vbproj.GenerateResource.Cache
+C:\Users\pc\Desktop\coding\GitHub\Minesweeper.NET\Minesweeper.NET\Minesweeper.NET\obj\Debug\Minesweeper.NET.exe
+C:\Users\pc\Desktop\coding\GitHub\Minesweeper.NET\Minesweeper.NET\Minesweeper.NET\obj\Debug\Minesweeper.NET.xml
+C:\Users\pc\Desktop\coding\GitHub\Minesweeper.NET\Minesweeper.NET\Minesweeper.NET\obj\Debug\Minesweeper.NET.pdb

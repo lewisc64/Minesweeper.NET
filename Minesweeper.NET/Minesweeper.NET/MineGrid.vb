@@ -81,7 +81,7 @@ Class Cell
                 If type = "mine" Then
                     Return "boom"
                 ElseIf number = 0 Then
-                    Return "trigger_chain_reaction"
+                    Return "digconnected"
                 Else
                     Return "dug"
                 End If
@@ -109,6 +109,43 @@ Public Class MineGrid
     Public cells As Array
     Public gridsize As Integer
     Public random As New Random
+
+    Function getAdjacentCells(x, y)
+        Dim tcells As New List(Of Cell)
+        Try
+            tcells.Add(cells(x - 1, y - 1))
+        Catch ex As Exception
+        End Try
+        Try
+            tcells.Add(cells(x + 1, y - 1))
+        Catch ex As Exception
+        End Try
+        Try
+            tcells.Add(cells(x - 1, y + 1))
+        Catch ex As Exception
+        End Try
+        Try
+            tcells.Add(cells(x + 1, y + 1))
+        Catch ex As Exception
+        End Try
+        Try
+            tcells.Add(cells(x - 1, y))
+        Catch ex As Exception
+        End Try
+        Try
+            tcells.Add(cells(x, y - 1))
+        Catch ex As Exception
+        End Try
+        Try
+            tcells.Add(cells(x + 1, y))
+        Catch ex As Exception
+        End Try
+        Try
+            tcells.Add(cells(x, y + 1))
+        Catch ex As Exception
+        End Try
+        Return tcells
+    End Function
 
     Sub New(ByRef display As VBGame, Optional gridsizet As Integer = 20, Optional mines As Integer = 300)
         Dim x, y, n, i As Integer
@@ -138,59 +175,29 @@ Public Class MineGrid
                     Continue For
                 End If
                 n = 0
-                Try
-                    If cells(x - 1, y - 1).type = "mine" Then
+                For Each Cell In getAdjacentCells(x, y)
+                    If Cell.type = "mine" Then
                         n += 1
                     End If
-                Catch ex As Exception
-                End Try
-                Try
-                    If cells(x + 1, y - 1).type = "mine" Then
-                        n += 1
-                    End If
-                Catch ex As Exception
-                End Try
-                Try
-                    If cells(x - 1, y + 1).type = "mine" Then
-                        n += 1
-                    End If
-                Catch ex As Exception
-                End Try
-                Try
-                    If cells(x + 1, y + 1).type = "mine" Then
-                        n += 1
-                    End If
-                Catch ex As Exception
-                End Try
-                Try
-                    If cells(x - 1, y).type = "mine" Then
-                        n += 1
-                    End If
-                Catch ex As Exception
-                End Try
-                Try
-                    If cells(x, y - 1).type = "mine" Then
-                        n += 1
-                    End If
-                Catch ex As Exception
-                End Try
-                Try
-                    If cells(x + 1, y).type = "mine" Then
-                        n += 1
-                    End If
-                Catch ex As Exception
-                End Try
-                Try
-                    If cells(x, y + 1).type = "mine" Then
-                        n += 1
-                    End If
-                Catch ex As Exception
-                End Try
-
+                Next
                 cells(x, y).number = n
 
             Next
         Next
+    End Sub
+
+    Sub digNine(ByRef cells, x, y)
+        Dim flags As Integer
+        For Each Cell In getAdjacentCells(x, y)
+            If Cell.flagged Then
+                flags += 1
+            End If
+        Next
+        If flags = cells(x, y).number Then
+            For Each Cell In getAdjacentCells(x, y)
+                Cell.dug = True
+            Next
+        End If
     End Sub
 
     Sub handleCells()
@@ -203,39 +210,9 @@ Public Class MineGrid
                 cmd = cells(x, y).handle()
 
                 If cmd = "dig9" Then
-                    Try
-                        cells(x - 1, y - 1).dug = True
-                    Catch ex As Exception
-                    End Try
-                    Try
-                        cells(x + 1, y - 1).dug = True
-                    Catch ex As Exception
-                    End Try
-                    Try
-                        cells(x - 1, y + 1).dug = True
-                    Catch ex As Exception
-                    End Try
-                    Try
-                        cells(x + 1, y + 1).dug = True
-                    Catch ex As Exception
-                    End Try
-                    Try
-                        cells(x - 1, y).dug = True
-                    Catch ex As Exception
-                    End Try
-                    Try
-                        cells(x, y - 1).dug = True
-                    Catch ex As Exception
-                    End Try
-                    Try
-                        cells(x + 1, y).dug = True
-                    Catch ex As Exception
-                    End Try
-                    Try
-                        cells(x, y + 1).dug = True
-                    Catch ex As Exception
-                    End Try
+                    digNine(cells, x, y)
                 End If
+
             Next
         Next
     End Sub

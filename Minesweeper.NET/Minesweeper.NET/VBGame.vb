@@ -56,8 +56,10 @@ Public Class VBGame
         width = CInt(resolution.Split({"x"}, StringSplitOptions.None)(0))
         height = CInt(resolution.Split({"x"}, StringSplitOptions.None)(1))
 
-        form.Width = width + 16 'accounting for weird borders around window
-        form.Height = height + 38
+        form.Width = width
+        form.Height = height
+        form.Width += form.Width - form.DisplayRectangle().Width
+        form.Height += form.Height - form.DisplayRectangle().Height
 
         form.Text = title
 
@@ -162,7 +164,7 @@ Public Class VBGame
     Function getImageFromDisplay() As Image
         Dim bitmap As Bitmap = New Bitmap(width, height, displaybuffer.Graphics)
         Dim g As Graphics = Graphics.FromImage(bitmap)
-        g.CopyFromScreen(New Point(form.Location.X + 8, form.Location.Y + 30), New Point(0, 0), form.Size)
+        g.CopyFromScreen(New Point(form.Location.X + (form.Width - form.DisplayRectangle().Width) / 2, form.Location.Y + (form.Height - form.DisplayRectangle().Height) * (15 / 19)), New Point(0, 0), New Size(width, height))
         Return bitmap
     End Function
 

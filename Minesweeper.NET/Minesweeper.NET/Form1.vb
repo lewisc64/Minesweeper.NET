@@ -23,7 +23,7 @@ Public Class Form1
 
     Sub gameloop()
         Dim run As Boolean = True
-        Dim minegrid As New MineGrid(vbgame)
+        Dim minegrid As New MineGrid(vbgame, 20, 200)
         While run
 
             vbgame.fill(Color.FromArgb(150, 150, 150))

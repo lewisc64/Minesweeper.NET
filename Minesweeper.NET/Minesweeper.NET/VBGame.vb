@@ -22,7 +22,7 @@ Public Class VBGame
     '''     
     ''' End While
     ''' </summary>
-    ''' <remarks>Version 0.6</remarks>
+    ''' <remarks>Version 0.7</remarks>
 
     Private WithEvents form As Form
     Public displaybuffer As System.Drawing.BufferedGraphics

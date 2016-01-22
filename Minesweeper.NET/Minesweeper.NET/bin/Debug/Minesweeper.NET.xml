@@ -27,7 +27,7 @@ Minesweeper.NET
      
  End While
  </summary>
-	<remarks>Version 0.6</remarks>
+	<remarks>Version 0.7</remarks>
 </member><member name="P:Minesweeper.NET.My.Resources.Resources.ResourceManager">
 	<summary>
   Returns the cached ResourceManager instance used by this class.

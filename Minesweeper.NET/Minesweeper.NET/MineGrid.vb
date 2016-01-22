@@ -2,6 +2,39 @@
     Public Shared images As New Dictionary(Of Integer, System.Drawing.Image)
 End Class
 
+Class cross
+
+    Public x As Integer
+    Public y As Integer
+    Public side As Integer
+    Public opacity As Integer
+    Public vbgame As VBGame
+
+    Public Shared crosses As New List(Of cross)
+
+    Public Sub New(vbgamet As VBGame, xt As Integer, yt As Integer, sidet As Integer)
+        side = sidet
+        x = xt
+        y = yt
+        opacity = 255
+        vbgame = vbgamet
+    End Sub
+
+    Public Sub draw()
+        vbgame.drawLine(New Point(x, y), New Point(x + side, y + side), Color.FromArgb(opacity, 255, 0, 0), side / 5)
+        vbgame.drawLine(New Point(x + side, y), New Point(x, y + side), Color.FromArgb(opacity, 255, 0, 0), side / 5)
+    End Sub
+
+    Public Sub handle()
+        opacity -= 10
+        If opacity < 0 Then
+            opacity = 0
+        End If
+        draw()
+    End Sub
+
+End Class
+
 Class Cell
 
     Public vbgame As VBGame
@@ -12,19 +45,9 @@ Class Cell
     Public x, y, ix, iy, side As Integer
     Public dug As Boolean = False
     Public cooldown As Integer = 0
-    'Public colors As New Dictionary(Of Integer, System.Drawing.Color)
+    Public opacity As Integer = 255
 
     Sub New(ByRef display As VBGame, Optional xt As Integer = 0, Optional yt As Integer = 0, Optional sidet As Integer = 10)
-
-        'colors.Add(0, Color.FromArgb(200, 200, 200))
-        'colors.Add(1, Color.FromArgb(0, 0, 255))
-        'colors.Add(2, Color.FromArgb(0, 128, 0))
-        'colors.Add(3, Color.FromArgb(255, 0, 0))
-        'colors.Add(4, Color.FromArgb(0, 0, 128))
-        'colors.Add(5, Color.FromArgb(128, 0, 0))
-        'colors.Add(6, Color.FromArgb(0, 128, 128))
-        'colors.Add(7, Color.FromArgb(0, 0, 0))
-        'colors.Add(8, Color.FromArgb(128, 128, 128))
 
         vbgame = display
 
@@ -37,6 +60,33 @@ Class Cell
         Return New Rectangle(x, y, side, side)
     End Function
 
+    Sub draw(tdug As Boolean)
+
+        If IsNothing(tdug) Then
+            tdug = dug
+        End If
+
+        If tdug Then
+            If number <> 0 Then
+                vbgame.blit(numbers.images(number), getRect())
+            End If
+            vbgame.drawRect(getRect(), Color.FromArgb(opacity, 200, 200, 200))
+            vbgame.drawRect(New Rectangle(x + (side / 10), y + (side / 10), side - (side / 10) * 2, side - (side / 10) * 2), Color.FromArgb(opacity, 250, 250, 250))
+            If opacity > 0 Then
+                opacity -= 100
+            End If
+            If opacity < 0 Then
+                opacity = 0
+            End If
+        Else
+            vbgame.drawRect(getRect(), Color.FromArgb(200, 200, 200))
+            vbgame.drawRect(New Rectangle(x + (side / 10), y + (side / 10), side - (side / 10) * 2, side - (side / 10) * 2), Color.FromArgb(250, 250, 250))
+        End If
+        If flagged Then
+            vbgame.drawRect(New Rectangle(x + (side / 4), y + (side / 4), side - (side / 4) * 2, side - (side / 4) * 2), vbgame.red)
+        End If
+    End Sub
+
     Function handle() As String
         Dim clicked As Boolean = False
 
@@ -48,11 +98,11 @@ Class Cell
             dug = False
         End If
 
+        draw(dug)
+
         If Not dug Then
             clicked = False 'button.handle()
 
-            vbgame.drawRect(getRect(), Color.FromArgb(200, 200, 200))
-            vbgame.drawRect(New Rectangle(x + 2, y + 2, side - 4, side - 4), Color.FromArgb(250, 250, 250))
             If Not IsNothing(vbgame.mouse) Then
                 If vbgame.collideRect(New Rectangle(vbgame.mouse.Location().X, vbgame.mouse.Location().Y, 1, 1), getRect()) Then
                     'vbgame.drawRect(getRect(), Color.FromArgb(128, 128, 128))
@@ -71,10 +121,6 @@ Class Cell
                 End If
             End If
 
-            If flagged Then
-                vbgame.drawRect(New Rectangle(x + 5, y + 5, side - 10, side - 10), vbgame.red)
-            End If
-
 
             If clicked Then
                 dug = True
@@ -87,9 +133,6 @@ Class Cell
                 End If
             End If
         Else
-            If number <> 0 Then
-                vbgame.blit(numbers.images(number), getRect())
-            End If
             If Not IsNothing(vbgame.mouse) Then
                 If vbgame.collideRect(New Rectangle(vbgame.mouse.Location().X, vbgame.mouse.Location().Y, 1, 1), getRect()) Then
                     If vbgame.mouse.Button = vbgame.mouse_right Then
@@ -168,19 +211,6 @@ Public Class MineGrid
         Return tcells
     End Function
 
-    Function getCellsInGroup(n As Integer)
-        Dim tcells As New List(Of Cell)
-        Dim x, y As Integer
-        For x = 0 To (vbgame.width - gridsize) / gridsize
-            For y = 0 To (vbgame.height - gridsize) / gridsize
-                If cells(x, y).group = n Then
-                    tcells.Add(cells(x, y))
-                End If
-            Next
-        Next
-        Return tcells
-    End Function
-
     Sub calculateNumbers(ByRef cells)
         Dim n = 0
         For x = 0 To (vbgame.width - gridsize) / gridsize
@@ -195,13 +225,12 @@ Public Class MineGrid
                     End If
                 Next
                 cells(x, y).number = n
-
             Next
         Next
     End Sub
 
     Sub New(ByRef display As VBGame, Optional gridsizet As Integer = 20, Optional mines As Integer = 300)
-        Dim x, y, n, i, groupn As Integer
+        Dim x, y, i As Integer
         Dim acted As Boolean
         gridsize = gridsizet
         vbgame = display
@@ -215,7 +244,9 @@ Public Class MineGrid
                 cells(x, y).ix = x
                 cells(x, y).iy = y
 
+                cells(x, y).draw(False)
             Next
+            vbgame.update()
         Next
 
         For i = 1 To mines
@@ -226,20 +257,23 @@ Public Class MineGrid
         Next
 
         calculateNumbers(cells)
-    End Sub
 
-    Sub digNine(ByRef cells, x, y)
-        Dim flags As Integer
-        For Each Cell In getAdjacentCells(x, y)
-            If Cell.flagged Then
-                flags += 1
+        acted = False
+        For x = 0 To (vbgame.width - gridsize) / gridsize
+            For y = 0 To (vbgame.height - gridsize) / gridsize
+                If cells(x, y).number = 0 Then
+                    cells(x, y).dug = True
+                    digNineAndConnected(cells, x, y)
+                    acted = True
+                End If
+                If acted Then
+                    Exit For
+                End If
+            Next
+            If acted Then
+                Exit For
             End If
         Next
-        If flags = cells(x, y).number Then
-            For Each Cell In getAdjacentCells(x, y)
-                Cell.dug = True
-            Next
-        End If
     End Sub
 
     Sub digNineAndConnected(ByRef cells, x, y)
@@ -258,6 +292,8 @@ Public Class MineGrid
                     End If
                 End If
             Next
+        Else
+            cross.crosses.Add(New cross(vbgame, cells(x, y).x, cells(x, y).y, cells(x, y).side))
         End If
     End Sub
 

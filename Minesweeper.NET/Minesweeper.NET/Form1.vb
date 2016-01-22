@@ -23,15 +23,29 @@ Public Class Form1
 
     Sub gameloop()
         Dim run As Boolean = True
-        Dim minegrid As New MineGrid(vbgame, 20, 200)
+        vbgame.fill(Color.FromArgb(150, 150, 150))
+        Dim minegrid As New MineGrid(vbgame, 20, 300)
         While run
 
             vbgame.fill(Color.FromArgb(150, 150, 150))
 
+            For Each e In vbgame.getKeyDownEvents()
+                If e = "R" Then
+                    minegrid = New MineGrid(vbgame, 20, 300)
+                End If
+            Next
+
             minegrid.handleCells()
 
+            For Each effect In cross.crosses.ToList()
+                If effect.opacity = 0 Then
+                    cross.crosses.Remove(effect)
+                End If
+                effect.handle()
+            Next
+
             vbgame.update()
-            vbgame.clockTick(60)
+            vbgame.clockTick(30)
 
         End While
     End Sub

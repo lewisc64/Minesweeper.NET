@@ -24,16 +24,16 @@ Public Class Form1
     Sub gameloop()
         Dim run As Boolean = True
         vbgame.fill(Color.FromArgb(150, 150, 150))
-        Dim minegrid As New MineGrid(vbgame, 20, 300)
+        Dim minegrid As New MineGrid(vbgame, 20, 400)
         While run
-
-            vbgame.fill(Color.FromArgb(150, 150, 150))
 
             For Each e In vbgame.getKeyDownEvents()
                 If e = "R" Then
-                    minegrid = New MineGrid(vbgame, 20, 300)
+                    minegrid = New MineGrid(vbgame, 20, 400)
                 End If
             Next
+
+            vbgame.fill(Color.FromArgb(150, 150, 150))
 
             minegrid.handleCells()
 

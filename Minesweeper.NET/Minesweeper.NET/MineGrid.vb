@@ -296,8 +296,8 @@ Public Class MineGrid
 
         For i = 1 To mines
             While True
-                x = random.Next(0, (vbgame.width - gridsize) / gridsize)
-                y = random.Next(0, (vbgame.height - gridsize) / gridsize)
+                x = random.Next(0, (vbgame.width - gridsize) / gridsize + 1)
+                y = random.Next(0, (vbgame.height - gridsize) / gridsize + 1)
                 If cells(x, y).number <> -1 Then
                     Exit While
                 End If

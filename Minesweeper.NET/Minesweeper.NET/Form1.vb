@@ -26,6 +26,11 @@ Public Class Form1
                 If e = "R" Then
                     minegrid = New MineGrid(vbgame, side, mines)
                 End If
+                ElseIf e = "C" Then
+                    For Each Cell In minegrid.cells
+                        Cell.dug = True
+                    Next
+                End If
             Next
 
             vbgame.fill(Color.FromArgb(150, 150, 150))

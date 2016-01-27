@@ -13,6 +13,7 @@ Class numbers
             g = Graphics.FromImage(bitmap)
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit
             Select Case n
+                Case -1
                     pen = New Pen(Color.Black, side / 10)
                     g.DrawLine(pen, New Point(side / 2, 0), New Point(side / 2, side))
                     g.DrawLine(pen, New Point(0, side / 2), New Point(side, side / 2))
@@ -88,7 +89,6 @@ Class Cell
     Public group As Integer
     Public x, y, ix, iy, side As Integer
     Public dug As Boolean = False
-    Public cooldown As Integer = 0
     Public opacity As Integer = 255
 
     Sub New(ByRef display As VBGame, Optional xt As Integer = 0, Optional yt As Integer = 0, Optional sidet As Integer = 10)
@@ -117,7 +117,7 @@ Class Cell
             vbgame.drawRect(getRect(), Color.FromArgb(opacity, 200, 200, 200))
             vbgame.drawRect(New Rectangle(x + (side / 10), y + (side / 10), side - (side / 10) * 2, side - (side / 10) * 2), Color.FromArgb(opacity, 250, 250, 250))
             If opacity > 0 Then
-                opacity -= 100
+                opacity -= 65
             End If
             If opacity < 0 Then
                 opacity = 0
@@ -131,38 +131,32 @@ Class Cell
         End If
     End Sub
 
-    Function handle() As String
+    Function handle(mouse As MouseEvent) As String
         Dim clicked As Boolean = False
-
-        If cooldown > 0 Then
-            cooldown -= 1
-        End If
 
         If flagged And dug Then
             dug = False
         End If
 
-        draw(dug)
-
         If Not dug Then
-            clicked = False 'button.handle()
+            clicked = False
 
-            If Not IsNothing(vbgame.mouse) Then
-                If vbgame.collideRect(New Rectangle(vbgame.mouse.Location().X, vbgame.mouse.Location().Y, 1, 1), getRect()) Then
-                    'vbgame.drawRect(getRect(), Color.FromArgb(128, 128, 128))
-                    If vbgame.mouse.Button = vbgame.mouse_left And Not flagged Then
-                        clicked = True
-                    ElseIf vbgame.mouse.Button = vbgame.mouse_right Then
-                        If cooldown <= 0 Then
-                            cooldown = 5
-                            If flagged Then
-                                flagged = False
-                            Else
-                                flagged = True
-                            End If
-                        End If
+            If vbgame.collideRect(New Rectangle(mouse.location.X, mouse.location.Y, 0, 0), getRect()) Then
+
+                Console.WriteLine(mouse.button)
+                Console.WriteLine(MouseEvent.ButtonLeft)
+
+                If mouse.button = MouseEvent.ButtonLeft And Not flagged Then
+                    clicked = True
+
+                ElseIf mouse.button = MouseEvent.ButtonRight Then
+                    If flagged Then
+                        flagged = False
+                    Else
+                        flagged = True
                     End If
                 End If
+
             End If
 
 
@@ -171,21 +165,19 @@ Class Cell
                 If type = "mine" Then
                     Return "boom"
                 ElseIf number = 0 Then
-                    Return "digconnected"
+                    Return "dig9"
                 Else
                     Return "dug"
                 End If
             End If
         Else
-            If Not IsNothing(vbgame.mouse) Then
-                If vbgame.collideRect(New Rectangle(vbgame.mouse.Location().X, vbgame.mouse.Location().Y, 1, 1), getRect()) Then
-                    If vbgame.mouse.Button = vbgame.mouse_right Then
-                        Return "dig9"
-                    End If
+            If vbgame.collideRect(New Rectangle(vbgame.mouse.Location().X, vbgame.mouse.Location().Y, 1, 1), getRect()) Then
+                If mouse.button = MouseEvent.ButtonRight Then
+                    Return "dig9"
                 End If
             End If
-            End If
-            Return "nothing"
+        End If
+        Return "nothing"
     End Function
 
 End Class
@@ -312,7 +304,7 @@ Public Class MineGrid
             For y = 0 To (vbgame.height - gridsize) / gridsize
                 If cells(x, y).number = 0 Then
                     cells(x, y).dug = True
-                    digNineAndConnected(cells, x, y)
+                    digNine(cells, x, y)
                     acted = True
                 End If
                 If acted Then
@@ -325,19 +317,25 @@ Public Class MineGrid
         Next
     End Sub
 
-    Sub digNineAndConnected(ByRef cells, x, y)
+    Sub digNine(ByRef cells, x, y)
         Dim flags As Integer
+
         For Each Cell In getAdjacentCells(x, y)
             If Cell.flagged Then
                 flags += 1
             End If
         Next
+
         If flags = cells(x, y).number Then
+
             For Each Cell In getAdjacentCells(x, y)
-                If Cell.dug = False Then
+
+                If Cell.dug = False And Not Cell.flagged Then
+
                     Cell.dug = True
+
                     If Cell.number = 0 Then
-                        digNineAndConnected(cells, Cell.ix, Cell.iy)
+                        digNine(cells, Cell.ix, Cell.iy)
                     End If
                 End If
             Next
@@ -346,19 +344,37 @@ Public Class MineGrid
         End If
     End Sub
 
-    Sub handleCells()
+    Sub drawCells()
         Dim tx, ty, x, y As Integer
-        Dim cmd As String
+
+        vbgame.fill(Color.FromArgb(150, 150, 150))
+
         For tx = 0 To (vbgame.width - gridsize) / gridsize
             For ty = 0 To (vbgame.height - gridsize) / gridsize
+
                 x = tx
                 y = ty
-                cmd = cells(x, y).handle()
+
+                cells(x, y).draw(cells(x, y).dug)
+
+            Next
+        Next
+    End Sub
+
+    Sub handleCells(mouse As MouseEvent)
+
+        Dim tx, ty, x, y As Integer
+        Dim cmd As String = ""
+        For tx = 0 To (vbgame.width - gridsize) / gridsize
+            For ty = 0 To (vbgame.height - gridsize) / gridsize
+
+                x = tx
+                y = ty
+
+                cmd = cells(x, y).handle(mouse)
 
                 If cmd = "dig9" Then
-                    digNineAndConnected(cells, x, y)
-                ElseIf cmd = "digconnected" Then
-                    digNineAndConnected(cells, x, y)
+                    digNine(cells, x, y)
                 End If
 
             Next

@@ -25,7 +25,6 @@ Public Class Form1
             For Each e In vbgame.getKeyDownEvents()
                 If e = "R" Then
                     minegrid = New MineGrid(vbgame, side, mines)
-                End If
                 ElseIf e = "C" Then
                     For Each Cell In minegrid.cells
                         Cell.dug = True

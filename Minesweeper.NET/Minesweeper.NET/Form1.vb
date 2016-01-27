@@ -1,4 +1,4 @@
-﻿Imports System.Threading
+Imports System.Threading
 
 Public Class Form1
 
@@ -9,27 +9,22 @@ Public Class Form1
         vbgame.setDisplay(Me, "1280x720")
         thread.Start()
 
-        numbers.images.Add(-1, vbgame.getImage("-1.png"))
-        numbers.images.Add(1, vbgame.getImage("1.png"))
-        numbers.images.Add(2, vbgame.getImage("2.png"))
-        numbers.images.Add(3, vbgame.getImage("3.png"))
-        numbers.images.Add(4, vbgame.getImage("4.png"))
-        numbers.images.Add(5, vbgame.getImage("5.png"))
-        numbers.images.Add(6, vbgame.getImage("6.png"))
-        numbers.images.Add(7, vbgame.getImage("7.png"))
-        numbers.images.Add(8, vbgame.getImage("8.png"))
-
     End Sub
 
     Sub gameloop()
         Dim run As Boolean = True
+        Dim side As Integer = 20
+        Dim mines As Integer = 400
         vbgame.fill(Color.FromArgb(150, 150, 150))
-        Dim minegrid As New MineGrid(vbgame, 20, 400)
+        Dim minegrid As New MineGrid(vbgame, side, mines)
+
+        numbers.generate(side)
+
         While run
 
             For Each e In vbgame.getKeyDownEvents()
                 If e = "R" Then
-                    minegrid = New MineGrid(vbgame, 20, 400)
+                    minegrid = New MineGrid(vbgame, side, mines)
                 End If
             Next
 

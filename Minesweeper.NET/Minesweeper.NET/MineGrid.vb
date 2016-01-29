@@ -8,6 +8,8 @@ Class numbers
         Dim g As Graphics
         Dim pen As Pen
 
+        images.Clear()
+
         For n As Integer = -1 To 8
             bitmap = New Bitmap(side, side)
             g = Graphics.FromImage(bitmap)
@@ -143,9 +145,6 @@ Class Cell
 
             If vbgame.collideRect(New Rectangle(mouse.location.X, mouse.location.Y, 0, 0), getRect()) Then
 
-                Console.WriteLine(mouse.button)
-                Console.WriteLine(MouseEvent.ButtonLeft)
-
                 If mouse.button = MouseEvent.ButtonLeft And Not flagged Then
                     clicked = True
 
@@ -156,9 +155,7 @@ Class Cell
                         flagged = True
                     End If
                 End If
-
             End If
-
 
             If clicked Then
                 dug = True
@@ -361,7 +358,7 @@ Public Class MineGrid
         Next
     End Sub
 
-    Sub handleCells(mouse As MouseEvent)
+    Function handleCells(mouse As MouseEvent)
 
         Dim tx, ty, x, y As Integer
         Dim cmd As String = ""
@@ -375,10 +372,13 @@ Public Class MineGrid
 
                 If cmd = "dig9" Then
                     digNine(cells, x, y)
+                ElseIf cmd = "boom" Then
+                    Return "boom"
                 End If
 
             Next
         Next
-    End Sub
+        Return Nothing
+    End Function
 
 End Class

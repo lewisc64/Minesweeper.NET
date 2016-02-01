@@ -1,4 +1,4 @@
-﻿Class numbers
+Class numbers
     Public Shared images As New Dictionary(Of Integer, System.Drawing.Image)
     Public Shared Sub generate(Optional side As Integer = 20)
         Dim vbgame As New VBGame

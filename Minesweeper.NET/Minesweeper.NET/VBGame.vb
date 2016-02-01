@@ -1,4 +1,4 @@
-﻿
+
 Imports System.Windows.Forms
 
 Public Class MouseEvent
@@ -62,7 +62,7 @@ Public Class VBGame
     '''     
     ''' End While
     ''' </summary>
-    ''' <remarks>Version 0.7</remarks>
+    ''' <remarks>Version 0.8</remarks>
 
     Private WithEvents form As Form
     Public displaybuffer As System.Drawing.BufferedGraphics
@@ -93,26 +93,21 @@ Public Class VBGame
     Public mouse_right As MouseButtons = MouseButtons.Right
     Public mouse_middle As MouseButtons = MouseButtons.Middle
 
-    Sub setDisplay(ByRef f As Form, resolution As String, Optional title As String = "", Optional fullscreen As Boolean = False)
+    Sub setDisplay(ByRef f As Form, resolution As Size, Optional title As String = "", Optional fullscreen As Boolean = False)
         form = f
-        width = CInt(resolution.Split({"x"}, StringSplitOptions.None)(0))
-        height = CInt(resolution.Split({"x"}, StringSplitOptions.None)(1))
 
-        form.Width = width
-        form.Height = height
-        form.Width += form.Width - form.DisplayRectangle().Width
-        form.Height += form.Height - form.DisplayRectangle().Height
+        setSize(resolution)
 
-        form.Text = title
+        form.Invoke(Sub() form.Text = title)
 
-        form.KeyPreview = True
+        form.Invoke(Sub() form.KeyPreview = True)
 
         If fullscreen Then
-            form.FormBorderStyle = Windows.Forms.FormBorderStyle.None
-            form.WindowState = FormWindowState.Maximized
+            form.Invoke(Sub() form.FormBorderStyle = Windows.Forms.FormBorderStyle.None)
+            form.Invoke(Sub() form.WindowState = FormWindowState.Maximized)
         Else
-            form.FormBorderStyle = Windows.Forms.FormBorderStyle.FixedSingle
-            form.WindowState = FormWindowState.Normal
+            form.Invoke(Sub() form.FormBorderStyle = Windows.Forms.FormBorderStyle.FixedSingle)
+            form.Invoke(Sub() form.WindowState = FormWindowState.Normal)
         End If
 
         displaycontext = BufferedGraphicsManager.Current
@@ -120,6 +115,15 @@ Public Class VBGame
 
         Windows.Forms.Cursor.Position = New Point(width / 2 + form.Location.X, height / 2 + form.Location.Y)
 
+    End Sub
+
+    Sub setSize(size As Size)
+        width = size.Width
+        height = size.Height
+        form.Invoke(Sub() form.Width = width)
+        form.Invoke(Sub() form.Height = height)
+        form.Invoke(Sub() form.Width += form.Width - form.DisplayRectangle().Width)
+        form.Invoke(Sub() form.Height += form.Height - form.DisplayRectangle().Height)
     End Sub
 
     Sub pushKeyUpEvent(key As String)
@@ -167,30 +171,30 @@ Public Class VBGame
         Return tlist
     End Function
 
-    Private Sub form_MouseWheel(ByVal sender As Object, ByVal e As MouseEventArgs) Handles form.MouseWheel
+    Private Sub form_MouseWheel(ByVal sender As Object, ByVal e As MouseEventArgs) Handles Form.MouseWheel
         mouse = e
     End Sub
 
-    Private Sub form_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles form.MouseMove
+    Private Sub form_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles Form.MouseMove
         mouseevents.Add(MouseEvent.InterpretFormEvent(e, MouseEvent.MouseMove))
         mouse = e
     End Sub
 
-    Private Sub form_MouseDown(ByVal sender As Object, ByVal e As MouseEventArgs) Handles form.MouseDown
+    Private Sub form_MouseDown(ByVal sender As Object, ByVal e As MouseEventArgs) Handles Form.MouseDown
         mouseevents.Add(MouseEvent.InterpretFormEvent(e, MouseEvent.MouseDown))
         mouse = e
     End Sub
 
-    Private Sub form_MouseClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles form.MouseClick
+    Private Sub form_MouseClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles Form.MouseClick
         mouseevents.Add(MouseEvent.InterpretFormEvent(e, MouseEvent.MouseUp))
         mouse = e
     End Sub
 
-    Private Sub form_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles form.KeyDown
+    Private Sub form_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles Form.KeyDown
         keydownevents.Add(e.KeyCode().ToString())
     End Sub
 
-    Private Sub form_KeyUp(ByVal sender As Object, ByVal e As KeyEventArgs) Handles form.KeyUp
+    Private Sub form_KeyUp(ByVal sender As Object, ByVal e As KeyEventArgs) Handles Form.KeyUp
         keyupevents.Add(e.KeyCode().ToString())
     End Sub
 
@@ -592,93 +596,3 @@ Class Button
     End Function
 
 End Class
-
-'Class Button
-'    Public x As Double = 0
-'    Public y As Double = 0
-'    Public width As Double = 0
-'    Public height As Double = 0
-
-'    Public bgcolorinactive As System.Drawing.Color = Color.White
-'    Public bgcoloractive As System.Drawing.Color = Color.White
-'    Public textcolor As System.Drawing.Color = Color.Black
-
-'    Public vbgame As VBGame
-
-'    Public text As String = ""
-'    Public fontsize As Single = 16
-'    Public fontname As String = "Arial"
-
-'    Sub useDisplay(ByRef vbgamet As VBGame)
-'        vbgame = vbgamet
-'    End Sub
-
-'    Public Function clone() As Button
-'        Return DirectCast(Me.MemberwiseClone(), Button)
-'    End Function
-
-'    Sub setColor(inactivecolor As System.Drawing.Color, activecolor As System.Drawing.Color)
-'        bgcolorinactive = inactivecolor
-'        bgcoloractive = activecolor
-'    End Sub
-
-'    Sub draw(active As Boolean)
-'        Dim font As New Font(fontname, fontsize)
-'        If active Then
-'            vbgame.drawRect(getRect(), bgcoloractive)
-'        Else
-'            vbgame.drawRect(getRect(), bgcolorinactive)
-'        End If
-'        vbgame.drawCenteredText(getRect(), text, textcolor, fontsize, fontname)
-'    End Sub
-
-'    Function handle(Optional drawb As Boolean = True) As MouseButtons
-'        Dim buttondown As MouseButtons = MouseButtons.None
-'        If Not IsNothing(vbgame.mouse) Then
-'            If vbgame.collideRect(New Rectangle(vbgame.mouse.Location.X, vbgame.mouse.Location.Y, 1, 1), getRect()) Then
-'                If drawb Then
-'                    draw(True)
-'                End If
-'                buttondown = vbgame.mouse.Button
-'            Else
-'                If drawb Then
-'                    draw(False)
-'                End If
-'            End If
-'        Else
-'            If drawb Then
-'                draw(False)
-'            End If
-'        End If
-'        Return buttondown
-'    End Function
-
-'    Sub setRect(rect As Rectangle)
-'        x = rect.X
-'        y = rect.Y
-'        width = rect.Width
-'        height = rect.Height
-'    End Sub
-
-'    Sub setXY(point As Point)
-'        x = point.X
-'        y = point.Y
-'    End Sub
-
-'    Function getRect() As Rectangle
-'        Return New Rectangle(x, y, width, height)
-'    End Function
-
-'    Function getXY() As Point
-'        Return New Point(x, y)
-'    End Function
-
-'    Function getCenter() As Point
-'        Return New Point(x + width / 2, y + height / 2)
-'    End Function
-
-'    Function getRadius() As Double
-'        Return (getRect().Width / 2 + getRect().Width / 2) / 2
-'    End Function
-
-'End Class

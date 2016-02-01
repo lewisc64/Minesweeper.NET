@@ -11,9 +11,13 @@ Public Class Form1
     Dim gridheight As Integer = 16
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        vbgame.setDisplay(Me, New Size(gridwidth * side, gridheight * side + 20), "Minesweeper.NET")
+        adjustSize()
         numbers.generate(side)
         thread.Start()
+    End Sub
+
+    Sub adjustSize()
+        vbgame.setDisplay(Me, New Size(Math.Max(gridwidth * side, 225), Math.Max(gridheight * side + 20, 65)), "Minesweeper.NET")
     End Sub
 
     Sub custom()
@@ -26,7 +30,7 @@ Public Class Form1
             gridheight = 16
             mines = 99
         End Try
-        vbgame.setDisplay(Me, New Size(gridwidth * side, gridheight * side + 20), "Minesweeper.NET")
+        adjustSize()
     End Sub
 
     Function getPreMineGrid(Optional preminegrid As MineGrid = Nothing)

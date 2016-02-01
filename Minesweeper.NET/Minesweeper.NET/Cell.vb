@@ -1,4 +1,4 @@
-﻿Class Cell
+Class Cell
 
     Public vbgame As VBGame
     Public type As String = "blank"

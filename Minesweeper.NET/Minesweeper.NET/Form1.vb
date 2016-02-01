@@ -11,19 +11,40 @@ Public Class Form1
     Dim gridheight As Integer = 16
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        vbgame.setDisplay(Me, gridwidth * side & "x" & gridheight * side, "Minesweeper.NET")
+        vbgame.setDisplay(Me, New Size(gridwidth * side, gridheight * side + 20), "Minesweeper.NET")
+        numbers.generate(side)
         thread.Start()
     End Sub
 
     Sub custom()
-        'width = InputBox("Grid width?")
-        'height = InputBox("Grid Height?")
-        mines = InputBox("Mines?")
-        'vbgame.setDisplay(Me, width * side & "x" & height * side, "Minesweeper.NET")
+        Try
+            gridwidth = InputBox("Grid width?")
+            gridheight = InputBox("Grid Height?")
+            mines = InputBox("Mines?")
+        Catch ex As Exception
+            gridwidth = 30
+            gridheight = 16
+            mines = 99
+        End Try
+        vbgame.setDisplay(Me, New Size(gridwidth * side, gridheight * side + 20), "Minesweeper.NET")
     End Sub
+
+    Function getPreMineGrid(Optional preminegrid As MineGrid = Nothing)
+        If IsNothing(preminegrid) Then
+            preminegrid = New MineGrid(vbgame, side, gridwidth, gridheight, mines)
+        End If
+        For Each Cell In preminegrid.cells
+            Cell.dug = True
+            Cell.opacity = 0
+        Next
+        Return preminegrid
+    End Function
 
     Sub mainloop()
         Dim run As Boolean = True
+
+        Dim preminegrid As MineGrid = getPreMineGrid()
+        Dim outcome As outcome
 
         Dim start As New Button(vbgame, "Start", New Rectangle(10, 10, 50, 20))
         start.setColor(Color.FromArgb(0, 0, 0, 0), vbgame.white)
@@ -39,18 +60,28 @@ Public Class Form1
 
         While run
 
+            For Each e In vbgame.getKeyDownEvents()
+                If e = "R" Then
+                    preminegrid = getPreMineGrid()
+                End If
+            Next
+
             For Each e In vbgame.getMouseEvents()
 
                 If start.handle(e) = MouseEvent.ButtonLeft Then
-                    gameloop()
+                    outcome = gameloop()
+                    preminegrid = getPreMineGrid(outcome.minegrid)
                 ElseIf customize.handle(e) = MouseEvent.ButtonLeft Then
                     custom()
+                    preminegrid = getPreMineGrid()
+                ElseIf customize.handle(e) = MouseEvent.ButtonRight Then
+                    MsgBox(gridwidth & "x" & gridheight & vbCrLf & mines & " mines.")
                 ElseIf quit.handle(e) = MouseEvent.ButtonLeft Then
                     End
                 End If
 
             Next
-            vbgame.fill(vbgame.black)
+            preminegrid.drawCells()
 
             start.draw()
             customize.draw()
@@ -62,24 +93,53 @@ Public Class Form1
 
     End Sub
 
+    Class outcome
+        Public action As String
+        Public minegrid As MineGrid
+        Public timer As Stopwatch
+        Public Sub New(actiont As String, minegridt As MineGrid, timert As Stopwatch)
+            timert.Stop()
+            timer = timert
+            action = actiont
+            minegrid = minegridt
+        End Sub
+    End Class
+
+    Sub drawInfo(timer As Stopwatch, minegrid As MineGrid)
+        Dim tx As Integer
+        Dim s As String
+        vbgame.drawText(New Point(0, gridheight * side), Math.Round(timer.ElapsedMilliseconds() / 1000, 2) & "s", vbgame.white, 10, "Arial Black")
+
+        tx = vbgame.width / 2
+        s = minegrid.flags
+        vbgame.drawText(New Point(tx, gridheight * side), s, vbgame.red, 10, "Arial Black")
+
+        tx += vbgame.displaybuffer.Graphics.MeasureString(s, New Font("Arial Black", 10)).Width
+        s = "/"
+        vbgame.drawText(New Point(tx, gridheight * side), s, vbgame.white, 10, "Arial Black")
+
+        tx += vbgame.displaybuffer.Graphics.MeasureString(s, New Font("Arial Black", 10)).Width
+        s = minegrid.mines
+        vbgame.drawText(New Point(tx, gridheight * side), s, vbgame.black, 10, "Arial Black")
+    End Sub
+
     Function gameloop()
         Dim run As Boolean = True
-        vbgame.fill(Color.FromArgb(150, 150, 150))
-        Dim minegrid As New MineGrid(vbgame, side, mines)
-
-        numbers.generate(side)
+        Dim minegrid As New MineGrid(vbgame, side, gridwidth, gridheight, mines)
+        Dim timer As New Stopwatch
+        timer.Start()
 
         While run
 
             For Each e In vbgame.getKeyDownEvents()
                 If e = "R" Then
-                    minegrid = New MineGrid(vbgame, side, mines)
+                    minegrid = New MineGrid(vbgame, side, gridwidth, gridheight, mines)
                 ElseIf e = "C" Then
                     For Each Cell In minegrid.cells
                         Cell.dug = True
                     Next
                 ElseIf e = "Escape" Then
-                    Return "escape"
+                    Return New outcome("escape", minegrid, timer)
                 End If
             Next
 
@@ -98,8 +158,11 @@ Public Class Form1
                 effect.handle()
             Next
 
-            vbgame.update()
+            drawInfo(timer, minegrid)
+
             vbgame.clockTick(30)
+
+            vbgame.update()
 
         End While
         Return Nothing

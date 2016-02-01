@@ -2,7 +2,11 @@ Public Class MineGrid
 
     Public vbgame As VBGame
     Public cells As Array
-    Public gridsize As Integer
+    Public side As Integer
+    Public mines As Integer
+    Public flags As Integer
+    Public gridwidth As Integer
+    Public gridheight As Integer
     Public random As New Random
 
     Function getDirectlyAdjacentCells(x, y)
@@ -65,8 +69,8 @@ Public Class MineGrid
 
     Sub calculateNumbers(ByRef cells)
         Dim n = 0
-        For x = 0 To (vbgame.width - gridsize) / gridsize
-            For y = 0 To (vbgame.height - gridsize) / gridsize
+        For x = 0 To gridwidth - 1
+            For y = 0 To gridheight - 1
                 If cells(x, y).type = "mine" Then
                     Continue For
                 End If
@@ -81,30 +85,31 @@ Public Class MineGrid
         Next
     End Sub
 
-    Sub New(ByRef display As VBGame, Optional gridsizet As Integer = 20, Optional mines As Integer = 300)
+    Sub New(ByRef display As VBGame, sidet As Integer, gridwidtht As Integer, gridheightt As Integer, minest As Integer)
         Dim x, y, i As Integer
         Dim acted As Boolean
-        gridsize = gridsizet
+        mines = minest
+        side = sidet
+        gridwidth = gridwidtht
+        gridheight = gridheightt
         vbgame = display
-        Dim cellst((vbgame.width - gridsize) / gridsize, (vbgame.height - gridsize) / gridsize) As Cell
+        Dim cellst(gridwidth - 1, gridheight - 1) As Cell
 
         cells = cellst
-        For x = 0 To (vbgame.width - gridsize) / gridsize
-            For y = 0 To (vbgame.height - gridsize) / gridsize
+        For x = 0 To gridwidth - 1
+            For y = 0 To gridheight - 1
 
-                cells(x, y) = New Cell(vbgame, x * gridsize, y * gridsize, gridsize)
+                cells(x, y) = New Cell(vbgame, x * side, y * side, side)
                 cells(x, y).ix = x
                 cells(x, y).iy = y
 
-                cells(x, y).draw(False)
             Next
-            vbgame.update()
         Next
 
         For i = 1 To mines
             While True
-                x = random.Next(0, (vbgame.width - gridsize) / gridsize + 1)
-                y = random.Next(0, (vbgame.height - gridsize) / gridsize + 1)
+                x = random.Next(0, gridwidth)
+                y = random.Next(0, gridheight)
                 If cells(x, y).number <> -1 Then
                     Exit While
                 End If
@@ -116,8 +121,8 @@ Public Class MineGrid
         calculateNumbers(cells)
 
         acted = False
-        For x = 0 To (vbgame.width - gridsize) / gridsize
-            For y = 0 To (vbgame.height - gridsize) / gridsize
+        For x = 0 To gridwidth - 1
+            For y = 0 To gridheight - 1
                 If cells(x, y).number = 0 Then
                     cells(x, y).dug = True
                     digNine(cells, x, y)
@@ -161,15 +166,12 @@ Public Class MineGrid
     End Sub
 
     Sub drawCells()
-        Dim tx, ty, x, y As Integer
+        Dim x, y As Integer
 
         vbgame.fill(Color.FromArgb(150, 150, 150))
 
-        For tx = 0 To (vbgame.width - gridsize) / gridsize
-            For ty = 0 To (vbgame.height - gridsize) / gridsize
-
-                x = tx
-                y = ty
+        For x = 0 To gridwidth - 1
+            For y = 0 To gridheight - 1
 
                 cells(x, y).draw(cells(x, y).dug)
 
@@ -179,15 +181,19 @@ Public Class MineGrid
 
     Function handleCells(mouse As MouseEvent)
 
-        Dim tx, ty, x, y As Integer
+        Dim x, y As Integer
         Dim cmd As String = ""
-        For tx = 0 To (vbgame.width - gridsize) / gridsize
-            For ty = 0 To (vbgame.height - gridsize) / gridsize
 
-                x = tx
-                y = ty
+        flags = 0
+
+        For x = 0 To gridwidth - 1
+            For y = 0 To gridheight - 1
 
                 cmd = cells(x, y).handle(mouse)
+
+                If cells(x, y).flagged Then
+                    flags += 1
+                End If
 
                 If cmd = "dig9" Then
                     digNine(cells, x, y)

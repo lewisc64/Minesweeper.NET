@@ -216,13 +216,7 @@ Public Class VBGame
     End Sub
 
     Function collideRect(rect1 As Rectangle, rect2 As Rectangle) As Boolean
-        Dim collision As Boolean = False
-        Dim crect As Rectangle
-        crect = Rectangle.Intersect(rect1, rect2)
-        If crect <> New Rectangle(0, 0, 0, 0) Then
-            collision = True
-        End If
-        Return collision
+        Return rect1.IntersectsWith(rect2)
     End Function
 
     Function getRect() As Rectangle

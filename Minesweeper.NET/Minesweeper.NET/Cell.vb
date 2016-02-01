@@ -59,7 +59,7 @@ Class Cell
         If Not dug Then
             clicked = False
 
-            If vbgame.collideRect(New Rectangle(mouse.location.X, mouse.location.Y, 0, 0), getRect()) Then
+            If vbgame.collideRect(New Rectangle(mouse.location.X, mouse.location.Y, 1, 1), getRect()) Then
 
                 If mouse.button = MouseEvent.ButtonLeft And Not flagged Then
                     clicked = True

@@ -8,3 +8,7 @@ C:\Users\pc\Desktop\coding\GitHub\Minesweeper.NET\Minesweeper.NET\Minesweeper.NE
 C:\Users\pc\Desktop\coding\GitHub\Minesweeper.NET\Minesweeper.NET\Minesweeper.NET\obj\Debug\Minesweeper.NET.exe
 C:\Users\pc\Desktop\coding\GitHub\Minesweeper.NET\Minesweeper.NET\Minesweeper.NET\obj\Debug\Minesweeper.NET.xml
 C:\Users\pc\Desktop\coding\GitHub\Minesweeper.NET\Minesweeper.NET\Minesweeper.NET\obj\Debug\Minesweeper.NET.pdb
+C:\Users\pc\Desktop\coding\GitHub\Minesweeper.NET\Minesweeper.NET\Minesweeper.NET\bin\Debug\Minesweeper.NET.exe.manifest
+C:\Users\pc\Desktop\coding\GitHub\Minesweeper.NET\Minesweeper.NET\Minesweeper.NET\bin\Debug\Minesweeper.NET.application
+C:\Users\pc\Desktop\coding\GitHub\Minesweeper.NET\Minesweeper.NET\Minesweeper.NET\obj\Debug\Minesweeper.NET.exe.manifest
+C:\Users\pc\Desktop\coding\GitHub\Minesweeper.NET\Minesweeper.NET\Minesweeper.NET\obj\Debug\Minesweeper.NET.application

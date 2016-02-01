@@ -63,6 +63,8 @@ Public Class Form1
             For Each e In vbgame.getKeyDownEvents()
                 If e = "R" Then
                     preminegrid = getPreMineGrid()
+                ElseIf e = "Escape" Then
+                    End
                 End If
             Next
 
@@ -134,6 +136,7 @@ Public Class Form1
             For Each e In vbgame.getKeyDownEvents()
                 If e = "R" Then
                     minegrid = New MineGrid(vbgame, side, gridwidth, gridheight, mines)
+                    timer.Restart()
                 ElseIf e = "C" Then
                     For Each Cell In minegrid.cells
                         Cell.dug = True

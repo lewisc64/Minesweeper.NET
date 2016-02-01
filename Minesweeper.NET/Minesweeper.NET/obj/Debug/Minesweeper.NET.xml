@@ -27,7 +27,7 @@ Minesweeper.NET
      
  End While
  </summary>
-	<remarks>Version 0.7</remarks>
+	<remarks>Version 0.8</remarks>
 </member><member name="F:Minesweeper.NET.Button.vbgame">
 	<summary>
  Put in vbgame.getMouseEvents() loop.

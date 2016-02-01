@@ -46,15 +46,15 @@ Public Class Form1
         Dim preminegrid As MineGrid = getPreMineGrid()
         Dim outcome As outcome
 
-        Dim start As New Button(vbgame, "Start", New Rectangle(10, 10, 50, 20))
+        Dim start As New Button(vbgame, "Start", New Rectangle(10, 10, 50, 20), "Arial Black")
         start.setColor(Color.FromArgb(0, 0, 0, 0), vbgame.white)
         start.setTextColor(vbgame.white, Color.FromArgb(0, 0, 0, 0))
 
-        Dim customize As New Button(vbgame, "Customize", New Rectangle(10, 40, 50, 15))
+        Dim customize As New Button(vbgame, "Custom", New Rectangle(10, 40, 50, 15), "Arial Black")
         customize.setColor(Color.FromArgb(0, 0, 0, 0), vbgame.white)
         customize.setTextColor(vbgame.white, Color.FromArgb(0, 0, 0, 0))
 
-        Dim quit As New Button(vbgame, "Quit", New Rectangle(70, 10, 50, 20))
+        Dim quit As New Button(vbgame, "Quit", New Rectangle(70, 10, 50, 20), "Arial Black")
         quit.setColor(Color.FromArgb(0, 0, 0, 0), vbgame.white)
         quit.setTextColor(vbgame.white, Color.FromArgb(0, 0, 0, 0))
 

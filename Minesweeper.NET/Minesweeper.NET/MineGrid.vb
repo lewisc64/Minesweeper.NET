@@ -138,7 +138,7 @@ Public Class MineGrid
         Next
     End Sub
 
-    Sub digNine(ByRef cells, x, y)
+    Function countFlags(ByRef cells, x, y)
         Dim flags As Integer
 
         For Each Cell In getAdjacentCells(x, y)
@@ -146,6 +146,13 @@ Public Class MineGrid
                 flags += 1
             End If
         Next
+
+        Return flags
+    End Function
+
+    Sub digNine(ByRef cells, x, y)
+        Dim flags As Integer
+        flags = countFlags(cells, x, y)
 
         If flags = cells(x, y).number Then
 
@@ -174,6 +181,8 @@ Public Class MineGrid
             For y = 0 To gridheight - 1
 
                 cells(x, y).draw(cells(x, y).dug)
+
+                'vbgame.drawCenteredText(New Rectangle(cells(x, y).x, cells(x, y).y, cells(x, y).side, cells(x, y).side), Math.Round(cells(x, y).probability, 2), vbgame.black, 8)
 
             Next
         Next

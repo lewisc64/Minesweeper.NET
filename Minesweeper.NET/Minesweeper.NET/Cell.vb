@@ -8,6 +8,7 @@ Class Cell
     Public x, y, ix, iy, side As Integer
     Public dug As Boolean = False
     Public opacity As Integer = 255
+    Public probability As Double 'Used by solver
 
     Sub New(ByRef display As VBGame, Optional xt As Integer = 0, Optional yt As Integer = 0, Optional sidet As Integer = 10)
 

@@ -239,11 +239,9 @@ Public Class VBGame
     End Function
 
     Sub saveImage(path As String)
-        'Dim Bitmap As Bitmap = New Bitmap(width, height, displaybuffer.Graphics)
         Dim bitmap As Bitmap
         bitmap = getImageFromDisplay()
         bitmap.Save(path, System.Drawing.Imaging.ImageFormat.Bmp)
-        'displaybuffer.Graphics.from()
     End Sub
 
     'drawing -----------------------------------------------------------------------
@@ -527,17 +525,21 @@ Class Button
         If Not IsNothing(rect) Then
             setRect(rect)
         End If
+        text = textt
+        fontname = fontnamet
         If fontsizet = 0 Then
             calculateFontSize()
         Else
             fontsize = fontsizet
         End If
-        fontname = fontnamet
-        text = textt
     End Sub
 
     Public Sub calculateFontSize()
-        fontsize = Math.Min(getRect().Height / 2, getRect().Width / 2)
+        For f As Integer = 1 To 75
+            If vbgame.displaybuffer.Graphics.MeasureString(text, New Font(fontname, f)).Width < width Then
+                fontsize = f
+            End If
+        Next
     End Sub
 
     Public Sub setColor(mouseoff As System.Drawing.Color, mouseon As System.Drawing.Color)

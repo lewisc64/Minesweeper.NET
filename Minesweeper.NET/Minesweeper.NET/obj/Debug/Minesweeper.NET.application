@@ -7,14 +7,14 @@
     <framework targetVersion="4.5" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="Minesweeper.NET.exe.manifest" size="3500">
+    <dependentAssembly dependencyType="install" codebase="Minesweeper.NET.exe.manifest" size="3972">
       <assemblyIdentity name="Minesweeper.NET.exe" version="1.0.0.1" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>ziHKPqPfSNBv1nHPCiN/sFrReJbT/Zd4CSKTqOknf3U=</dsig:DigestValue>
+        <dsig:DigestValue>r7q8NsG9XY6GdHBAmknDSbqSPyVgYNEZpb1k9QOArKs=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

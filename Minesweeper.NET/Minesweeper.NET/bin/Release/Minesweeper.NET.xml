@@ -1,0 +1,51 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+Minesweeper.NET
+</name>
+</assembly>
+<members>
+<member name="F:Minesweeper.NET.VBGame.form">
+	<summary>
+ Game loop needs to be a thread.
+ To use, the display must be set the the form's load event.
+ 
+ Usage ----------------------------------------------------
+ 
+ Dim object As New VBGame
+ object.setdisplay(form, "[width]x[height]")
+ 
+ Loop structure -------------------------------------------
+ 
+ While run
+ 
+     [do something]    
+ 
+     vbgame.update() 'Renders the buffer to the screen
+     vbgame.clocktick([fps]) 'Waits so that a certain amount of frames pass in a second
+     
+ End While
+ </summary>
+	<remarks>Version 0.8</remarks>
+</member><member name="F:Minesweeper.NET.Button.vbgame">
+	<summary>
+ Put in vbgame.getMouseEvents() loop.
+ </summary>
+	<remarks></remarks>
+</member><member name="P:Minesweeper.NET.My.Resources.Resources.ResourceManager">
+	<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member><member name="P:Minesweeper.NET.My.Resources.Resources.Culture">
+	<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member><member name="T:Minesweeper.NET.My.Resources.Resources">
+	<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
+</members>
+</doc>

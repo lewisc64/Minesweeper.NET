@@ -3,7 +3,7 @@ A Minesweeper clone made in VB.NET
 
 <img src="https://www.dropbox.com/s/sqbup9fkapic1g7/screenshot.png?dl=1"></img>
 
-The goal of this is to make a minesweeper game that got rid of all the extra garbage that no-one really uses. Clean and simple.
+The goal of this is to make a minesweeper game that gets rid of all the extra garbage that no-one really uses. Clean and simple.
 
 <b>Things this does not include from original minesweeper:</b>
  - Question Marks

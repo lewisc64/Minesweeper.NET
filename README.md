@@ -18,7 +18,6 @@ The goal of this is to make a minesweeper game that got rid of all the extra gar
 
 <b>Planned features:</b>
  - Generation without guessing
+ - Win state
  - Mine explosions
  - Sounds
-
-Release will be made when mine explosions are implemented

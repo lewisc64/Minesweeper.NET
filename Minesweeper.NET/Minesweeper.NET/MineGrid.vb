@@ -177,8 +177,14 @@ Public Class MineGrid
 
         vbgame.fill(Color.FromArgb(150, 150, 150))
 
+        flags = 0
+
         For x = 0 To gridwidth - 1
             For y = 0 To gridheight - 1
+
+                If cells(x, y).flagged Then
+                    flags += 1
+                End If
 
                 cells(x, y).draw(cells(x, y).dug)
 
@@ -189,29 +195,24 @@ Public Class MineGrid
     End Sub
 
     Function handleCells(mouse As MouseEvent)
-
         Dim x, y As Integer
         Dim cmd As String = ""
 
-        flags = 0
+        x = Math.Floor(mouse.location.X / side)
+        y = Math.Floor(mouse.location.Y / side)
 
-        For x = 0 To gridwidth - 1
-            For y = 0 To gridheight - 1
+        Try
 
-                cmd = cells(x, y).handle(mouse)
+        Catch ex As IndexOutOfRangeException
+            If cmd = "dig9" Then
+                digNine(cells, x, y)
+            ElseIf cmd = "boom" Then
+                Return "boom"
+            End If
+        End Try
 
-                If cells(x, y).flagged Then
-                    flags += 1
-                End If
+        cmd = cells(x, y).handle(mouse)
 
-                If cmd = "dig9" Then
-                    digNine(cells, x, y)
-                ElseIf cmd = "boom" Then
-                    Return "boom"
-                End If
-
-            Next
-        Next
         Return Nothing
     End Function
 

@@ -191,7 +191,7 @@ Public Class Form1
             Next
 
             For Each e In vbgame.getMouseEvents()
-                If e.action = MouseEvent.MouseDown Then
+                If e.action = MouseEvent.MouseUp Then
                     minegrid.handleCells(e)
                 End If
             Next

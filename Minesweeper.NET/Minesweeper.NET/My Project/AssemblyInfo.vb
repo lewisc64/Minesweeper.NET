@@ -9,7 +9,7 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("Minesweeper.NET")> 
-<Assembly: AssemblyDescription("")> 
+<Assembly: AssemblyDescription("A Minesweeper clone made in VB.NET")> 
 <Assembly: AssemblyCompany("")> 
 <Assembly: AssemblyProduct("Minesweeper.NET")> 
 <Assembly: AssemblyCopyright("Copyright ©  2016")> 

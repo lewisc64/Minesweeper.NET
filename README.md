@@ -13,12 +13,11 @@ The goal of this is to make a minesweeper game that gets rid of all the extra ga
  - Obnoxiously huge cells
 
 <b>Things this adds:</b>
- - When the grid is resized, the size of the window adjusts and not the size of the cell. (Cells are 20px wide)
- - Stored as a single executable
- - Boundless Custom Sizes
+ - Boundless Custom Sizes (Within reason)
  - Solver AI (Generate a game which does not require guessing in near future)
 
 <b>Planned features:</b>
+ - Custom puzzles and editor
  - Generation without guessing
  - Win state
  - Mine explosions

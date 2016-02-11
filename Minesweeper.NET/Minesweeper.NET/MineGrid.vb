@@ -189,7 +189,6 @@ Public Class MineGrid
                 cells(x, y).draw(cells(x, y).dug)
 
                 'vbgame.drawCenteredText(New Rectangle(cells(x, y).x, cells(x, y).y, cells(x, y).side, cells(x, y).side), Math.Round(cells(x, y).probability, 2), vbgame.black, 8)
-
             Next
         Next
     End Sub
@@ -202,16 +201,15 @@ Public Class MineGrid
         y = Math.Floor(mouse.location.Y / side)
 
         Try
+            cmd = cells(x, y).handle(mouse)
 
-        Catch ex As IndexOutOfRangeException
             If cmd = "dig9" Then
                 digNine(cells, x, y)
             ElseIf cmd = "boom" Then
                 Return "boom"
             End If
+        Catch ex As IndexOutOfRangeException
         End Try
-
-        cmd = cells(x, y).handle(mouse)
 
         Return Nothing
     End Function

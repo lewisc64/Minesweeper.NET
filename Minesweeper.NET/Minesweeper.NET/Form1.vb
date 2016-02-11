@@ -10,6 +10,8 @@ Public Class Form1
     Dim gridwidth As Integer = 30
     Dim gridheight As Integer = 16
 
+    Dim guesslessgen As Boolean = False
+
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         adjustSize()
         numbers.generate(side)
@@ -83,6 +85,10 @@ Public Class Form1
         quit.setColor(Color.FromArgb(0, 0, 0, 0), vbgame.white)
         quit.setTextColor(vbgame.white, Color.FromArgb(0, 0, 0, 0))
 
+        Dim guessless As New Button(vbgame, "Guessless", New Rectangle(vbgame.width - 60, vbgame.height - 30, 50, 20), "Arial Black")
+        guessless.setColor(vbgame.red, vbgame.red)
+        guessless.setTextColor(vbgame.black, vbgame.black)
+
         While run
 
             For Each e In vbgame.getKeyDownEvents()
@@ -94,6 +100,8 @@ Public Class Form1
             Next
 
             quit.x = vbgame.width - 60
+            guessless.x = vbgame.width - 60
+            guessless.y = vbgame.height - 30
 
             For Each e In vbgame.getMouseEvents()
 
@@ -114,8 +122,17 @@ Public Class Form1
 
                 ElseIf customize.handle(e) = MouseEvent.ButtonRight Then
                     MsgBox(gridwidth & "x" & gridheight & vbCrLf & mines & " mines.")
+
                 ElseIf quit.handle(e) = MouseEvent.ButtonLeft Then
                     End
+                ElseIf guessless.handle(e) = MouseEvent.ButtonLeft Then
+                    If guesslessgen Then
+                        guesslessgen = False
+                        guessless.setColor(vbgame.red, vbgame.red)
+                    Else
+                        guesslessgen = True
+                        guessless.setColor(vbgame.green, vbgame.green)
+                    End If
                 End If
 
             Next
@@ -127,12 +144,80 @@ Public Class Form1
             intermediate.draw()
             expert.draw()
             quit.draw()
+            vbgame.drawText(New Point(guessless.x - 40, guessless.y - 40), "Experimental", vbgame.white, 10, "Arial Black")
+            guessless.draw()
 
             vbgame.update()
 
         End While
 
     End Sub
+
+    Function getDensity() As Double
+        Return mines / (gridwidth * gridheight)
+    End Function
+
+    Function getGuessless() As MineGrid
+        Dim solver As Solver
+        Dim minegrid As New MineGrid(vbgame, side, gridwidth, gridheight, mines)
+        Dim flags As Integer
+        Dim x, y As Integer
+
+        For x = 1 To 500
+
+            minegrid = New MineGrid(vbgame, side, gridwidth, gridheight, mines)
+            solver = New Solver(minegrid)
+            flags = 0
+
+            For y = 1 To 5
+
+                If Not solver.handle() Then
+                    Exit For
+                End If
+
+                If minegrid.flags = mines Then
+                    Exit For
+                End If
+
+            Next
+
+            If minegrid.flags = mines Then
+                Exit For
+            End If
+
+        Next
+
+        If x >= 499 Then
+            MsgBox("Unable to create guessless game (Failed after " & x & " attempts.)")
+        End If
+
+        For Each Cell As Cell In minegrid.cells
+            Cell.dug = False
+            Cell.flagged = False
+        Next
+
+        For Each Cell As Cell In minegrid.cells
+            If Cell.number = 0 Then
+                minegrid.digNine(minegrid.cells, Cell.ix, Cell.iy)
+                Cell.dug = True
+                Exit For
+            End If
+        Next
+
+        Return minegrid
+
+    End Function
+
+    Function getNewGrid()
+        If guesslessgen And getDensity() <= 0.2 Then
+            Return getGuessless()
+        Else
+            If getDensity() > 0.2 And guesslessgen Then
+                MsgBox("Mine density too high for guessless.")
+            End If
+            Return New MineGrid(vbgame, side, gridwidth, gridheight, mines)
+        End If
+    End Function
 
     Class outcome
         Public action As String
@@ -166,9 +251,11 @@ Public Class Form1
 
     Function gameloop(Optional autosolve As Boolean = False)
         Dim run As Boolean = True
-        Dim minegrid As New MineGrid(vbgame, side, gridwidth, gridheight, mines)
+        Dim minegrid As MineGrid
         Dim timer As New Stopwatch
         timer.Start()
+
+        minegrid = getNewGrid()
 
         Dim solver As Solver = New Solver(minegrid)
 
@@ -176,7 +263,7 @@ Public Class Form1
 
             For Each e In vbgame.getKeyDownEvents()
                 If e = "R" Then
-                    minegrid = New MineGrid(vbgame, side, gridwidth, gridheight, mines)
+                    minegrid = getNewGrid()
                     timer.Restart()
                     solver = New Solver(minegrid)
                 ElseIf e = "C" Then

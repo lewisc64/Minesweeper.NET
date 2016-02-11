@@ -4,7 +4,6 @@ Class Cell
     Public type As String = "blank"
     Public flagged As Boolean = False
     Public number As Integer = 0
-    Public group As Integer
     Public x, y, ix, iy, side As Integer
     Public dug As Boolean = False
     Public opacity As Integer = 255

@@ -1,18 +1,21 @@
 ﻿Public Class Solver
     Public minegrid As MineGrid
     Public frames As Integer = 0
+    Public framelimit As Integer = 0
 
     Public Sub New(ByRef minegridt As MineGrid)
         minegrid = minegridt
     End Sub
 
-    Sub handle()
+    Function handle()
 
+        Dim change As Boolean = False
         Dim adj As List(Of Cell)
         Dim flags As Integer
+        Dim probability As Double
         Dim acted As Boolean = False
 
-        If frames >= 0 Then
+        If frames >= framelimit Then
             frames = 0
 
             For Each Cell As Cell In minegrid.cells
@@ -25,7 +28,7 @@
                     adj = minegrid.getAdjacentCells(Cell.ix, Cell.iy)
 
                     For Each adjcell As Cell In adj.ToList()
-                        If adjcell.dug Then
+                        If adjcell.dug Or adjcell.flagged Then
                             adj.Remove(adjcell)
                         End If
                     Next
@@ -38,10 +41,14 @@
                     End If
 
                     For Each adjcell As Cell In adj.ToList()
-                        adjcell.probability = (Cell.number) / (adj.ToArray().Length)
+                        probability = (Cell.number - flags) / (adj.ToArray().Length)
+
+                        adjcell.probability = probability
 
                         If adjcell.probability = 1 Then
                             adjcell.flagged = True
+                            minegrid.flags += 1
+                            change = True
                         ElseIf adjcell.probability = 0 Then
                             adjcell.dug = True
                         End If
@@ -54,6 +61,8 @@
             frames += 1
         End If
 
-    End Sub
+        Return change
+
+    End Function
 
 End Class

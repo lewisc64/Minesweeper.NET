@@ -1,6 +1,6 @@
+<System.Serializable()>
 Class Cell
 
-    Public vbgame As VBGame
     Public type As String = "blank"
     Public flagged As Boolean = False
     Public number As Integer = 0
@@ -9,9 +9,7 @@ Class Cell
     Public opacity As Integer = 255
     Public probability As Double 'Used by solver
 
-    Sub New(ByRef display As VBGame, Optional xt As Integer = 0, Optional yt As Integer = 0, Optional sidet As Integer = 10)
-
-        vbgame = display
+    Sub New(Optional xt As Integer = 0, Optional yt As Integer = 0, Optional sidet As Integer = 10)
 
         x = xt
         y = yt
@@ -22,7 +20,7 @@ Class Cell
         Return New Rectangle(x, y, side, side)
     End Function
 
-    Sub draw(tdug As Boolean)
+    Sub draw(tdug As Boolean, ByRef vbgame As VBGame)
 
         If IsNothing(tdug) Then
             tdug = dug
@@ -81,10 +79,8 @@ Class Cell
                 End If
             End If
         Else
-            If vbgame.collideRect(New Rectangle(vbgame.mouse.Location().X, vbgame.mouse.Location().Y, 1, 1), getRect()) Then
-                If mouse.button = MouseEvent.ButtonRight Then
-                    Return "dig9"
-                End If
+            If mouse.button = MouseEvent.ButtonRight Then
+                Return "dig9"
             End If
         End If
         Return "nothing"

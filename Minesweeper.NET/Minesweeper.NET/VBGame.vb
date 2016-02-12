@@ -40,6 +40,7 @@ Public Class MouseEvent
 
 End Class
 
+<System.Serializable()>
 Public Class VBGame
 
     ''' <summary>
@@ -171,30 +172,30 @@ Public Class VBGame
         Return tlist
     End Function
 
-    Private Sub form_MouseWheel(ByVal sender As Object, ByVal e As MouseEventArgs) Handles Form.MouseWheel
+    Private Sub form_MouseWheel(ByVal sender As Object, ByVal e As MouseEventArgs) Handles form.MouseWheel
         mouse = e
     End Sub
 
-    Private Sub form_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles Form.MouseMove
+    Private Sub form_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles form.MouseMove
         mouseevents.Add(MouseEvent.InterpretFormEvent(e, MouseEvent.MouseMove))
         mouse = e
     End Sub
 
-    Private Sub form_MouseDown(ByVal sender As Object, ByVal e As MouseEventArgs) Handles Form.MouseDown
+    Private Sub form_MouseDown(ByVal sender As Object, ByVal e As MouseEventArgs) Handles form.MouseDown
         mouseevents.Add(MouseEvent.InterpretFormEvent(e, MouseEvent.MouseDown))
         mouse = e
     End Sub
 
-    Private Sub form_MouseClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles Form.MouseClick
+    Private Sub form_MouseClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles form.MouseClick
         mouseevents.Add(MouseEvent.InterpretFormEvent(e, MouseEvent.MouseUp))
         mouse = e
     End Sub
 
-    Private Sub form_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles Form.KeyDown
+    Private Sub form_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles form.KeyDown
         keydownevents.Add(e.KeyCode().ToString())
     End Sub
 
-    Private Sub form_KeyUp(ByVal sender As Object, ByVal e As KeyEventArgs) Handles Form.KeyUp
+    Private Sub form_KeyUp(ByVal sender As Object, ByVal e As KeyEventArgs) Handles form.KeyUp
         keyupevents.Add(e.KeyCode().ToString())
     End Sub
 

@@ -13,3 +13,4 @@ C:\Users\pc\Desktop\coding\GitHub\Minesweeper.NET\Minesweeper.NET\Minesweeper.NE
 C:\Users\pc\Desktop\coding\GitHub\Minesweeper.NET\Minesweeper.NET\Minesweeper.NET\obj\Debug\Minesweeper.NET.xml
 C:\Users\pc\Desktop\coding\GitHub\Minesweeper.NET\Minesweeper.NET\Minesweeper.NET\obj\Debug\Minesweeper.NET.pdb
 C:\Users\pc\Desktop\coding\GitHub\Minesweeper.NET\Minesweeper.NET\Minesweeper.NET\obj\Debug\Minesweeper.NET.vbprojResolveAssemblyReference.cache
+C:\Users\pc\Desktop\coding\GitHub\Minesweeper.NET\Minesweeper.NET\Minesweeper.NET\obj\Debug\Minesweeper.NET.Editor.resources

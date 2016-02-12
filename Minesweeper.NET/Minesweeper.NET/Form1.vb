@@ -38,7 +38,7 @@ Public Class Form1
 
     Function getPreMineGrid(Optional preminegrid As MineGrid = Nothing)
         If IsNothing(preminegrid) Then
-            preminegrid = New MineGrid(vbgame, side, gridwidth, gridheight, mines)
+            preminegrid = New MineGrid(side, gridwidth, gridheight, mines)
         End If
         For Each Cell In preminegrid.cells
             Cell.dug = True
@@ -85,6 +85,10 @@ Public Class Form1
         quit.setColor(Color.FromArgb(0, 0, 0, 0), vbgame.white)
         quit.setTextColor(vbgame.white, Color.FromArgb(0, 0, 0, 0))
 
+        Dim editorb As New Button(vbgame, "Editor", New Rectangle(vbgame.width - 60, 35, 50, 20), "Arial Black", 11)
+        editorb.setColor(Color.FromArgb(0, 0, 0, 0), vbgame.white)
+        editorb.setTextColor(vbgame.white, Color.FromArgb(0, 0, 0, 0))
+
         Dim guessless As New Button(vbgame, "Guessless", New Rectangle(vbgame.width - 60, vbgame.height - 30, 50, 20), "Arial Black")
         guessless.setColor(vbgame.red, vbgame.red)
         guessless.setTextColor(vbgame.black, vbgame.black)
@@ -100,6 +104,7 @@ Public Class Form1
             Next
 
             quit.x = vbgame.width - 60
+            editorb.x = vbgame.width - 60
             guessless.x = vbgame.width - 60
             guessless.y = vbgame.height - 30
 
@@ -125,6 +130,8 @@ Public Class Form1
 
                 ElseIf quit.handle(e) = MouseEvent.ButtonLeft Then
                     End
+                ElseIf editorb.handle(e) = MouseEvent.ButtonLeft Then
+                    Editor.ShowDialog()
                 ElseIf guessless.handle(e) = MouseEvent.ButtonLeft Then
                     If guesslessgen Then
                         guesslessgen = False
@@ -136,7 +143,7 @@ Public Class Form1
                 End If
 
             Next
-            preminegrid.drawCells()
+            preminegrid.drawCells(vbgame)
 
             start.draw()
             customize.draw()
@@ -144,6 +151,7 @@ Public Class Form1
             intermediate.draw()
             expert.draw()
             quit.draw()
+            editorb.draw()
             vbgame.drawText(New Point(guessless.x - 40, guessless.y - 40), "Experimental", vbgame.white, 10, "Arial Black")
             guessless.draw()
 
@@ -159,13 +167,13 @@ Public Class Form1
 
     Function getGuessless() As MineGrid
         Dim solver As Solver
-        Dim minegrid As New MineGrid(vbgame, side, gridwidth, gridheight, mines)
+        Dim minegrid As New MineGrid(side, gridwidth, gridheight, mines)
         Dim flags As Integer
         Dim x, y As Integer
 
         For x = 1 To 500
 
-            minegrid = New MineGrid(vbgame, side, gridwidth, gridheight, mines)
+            minegrid = New MineGrid(side, gridwidth, gridheight, mines)
             solver = New Solver(minegrid)
             flags = 0
 
@@ -215,7 +223,7 @@ Public Class Form1
             If getDensity() > 0.2 And guesslessgen Then
                 MsgBox("Mine density too high for guessless.")
             End If
-            Return New MineGrid(vbgame, side, gridwidth, gridheight, mines)
+            Return New MineGrid(side, gridwidth, gridheight, mines)
         End If
     End Function
 
@@ -287,13 +295,13 @@ Public Class Form1
                 solver.handle()
             End If
 
-            minegrid.drawCells()
+            minegrid.drawCells(vbgame)
 
             For Each effect In cross.crosses.ToList()
                 If effect.opacity = 0 Then
                     cross.crosses.Remove(effect)
                 End If
-                effect.handle()
+                effect.handle(vbgame)
             Next
 
             drawInfo(timer, minegrid)

@@ -55,29 +55,27 @@ Class cross
     Public y As Integer
     Public side As Integer
     Public opacity As Integer
-    Public vbgame As VBGame
 
     Public Shared crosses As New List(Of cross)
 
-    Public Sub New(vbgamet As VBGame, xt As Integer, yt As Integer, sidet As Integer)
+    Public Sub New(xt As Integer, yt As Integer, sidet As Integer)
         side = sidet
         x = xt
         y = yt
         opacity = 255
-        vbgame = vbgamet
     End Sub
 
-    Public Sub draw()
-        vbgame.drawLine(New Point(x, y), New Point(x + side, y + side), Color.FromArgb(opacity, 255, 0, 0), side / 5)
-        vbgame.drawLine(New Point(x + side, y), New Point(x, y + side), Color.FromArgb(opacity, 255, 0, 0), side / 5)
+    Public Sub draw(ByRef vbgame As VBGame)
+        VBGame.drawLine(New Point(x, y), New Point(x + side, y + side), Color.FromArgb(opacity, 255, 0, 0), side / 5)
+        VBGame.drawLine(New Point(x + side, y), New Point(x, y + side), Color.FromArgb(opacity, 255, 0, 0), side / 5)
     End Sub
 
-    Public Sub handle()
+    Public Sub handle(ByRef vbgame As VBGame)
         opacity -= 10
         If opacity < 0 Then
             opacity = 0
         End If
-        draw()
+        draw(vbgame)
     End Sub
 
 End Class

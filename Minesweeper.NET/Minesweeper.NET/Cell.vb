@@ -1,7 +1,6 @@
 <System.Serializable()>
 Class Cell
 
-    Public type As String = "blank"
     Public flagged As Boolean = False
     Public number As Integer = 0
     Public x, y, ix, iy, side As Integer
@@ -70,7 +69,7 @@ Class Cell
 
             If clicked Then
                 dug = True
-                If type = "mine" Then
+                If number = -1 Then
                     Return "boom"
                 ElseIf number = 0 Then
                     Return "dig9"

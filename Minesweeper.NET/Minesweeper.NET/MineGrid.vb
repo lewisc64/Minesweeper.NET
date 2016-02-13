@@ -5,6 +5,7 @@ Imports System.Runtime.Serialization.Formatters.Binary
 Public Class MineGrid
 
     Public cells As Array
+    Public startpoint As Point = New Point(-1, -1)
     Public side As Integer
     Public mines As Integer
     Public flags As Integer
@@ -74,12 +75,12 @@ Public Class MineGrid
         Dim n = 0
         For x = 0 To gridwidth - 1
             For y = 0 To gridheight - 1
-                If cells(x, y).type = "mine" Then
+                If cells(x, y).number = -1 Then
                     Continue For
                 End If
                 n = 0
                 For Each Cell In getAdjacentCells(x, y)
-                    If Cell.type = "mine" Then
+                    If Cell.number = -1 Then
                         n += 1
                     End If
                 Next
@@ -119,7 +120,6 @@ Public Class MineGrid
                     End If
                 End While
                 cells(x, y).number = -1
-                cells(x, y).type = "mine"
             Next
 
             calculateNumbers(cells)

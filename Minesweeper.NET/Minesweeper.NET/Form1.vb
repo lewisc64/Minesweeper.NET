@@ -36,6 +36,16 @@ Public Class Form1
         adjustSize()
     End Sub
 
+    Function loadGrid() As MineGrid
+        Dim grid As MineGrid
+        Dim filename As String = InputBox("Name of puzzle?")
+        grid = MineGrid.load(filename & ".minegrid")
+        mines = grid.mines
+        gridwidth = grid.gridwidth
+        gridheight = grid.gridheight
+        Return grid
+    End Function
+
     Function getPreMineGrid(Optional preminegrid As MineGrid = Nothing)
         If IsNothing(preminegrid) Then
             preminegrid = New MineGrid(side, gridwidth, gridheight, mines)
@@ -80,6 +90,10 @@ Public Class Form1
         expert.setColor(Color.FromArgb(0, 0, 0, 0), vbgame.white)
         expert.setTextColor(vbgame.white, Color.FromArgb(0, 0, 0, 0))
 
+        Dim load As New Button(vbgame, "Load", New Rectangle(10, 160, 110, 20), "Arial Black", 11)
+        load.setColor(Color.FromArgb(0, 0, 0, 0), vbgame.white)
+        load.setTextColor(vbgame.white, Color.FromArgb(0, 0, 0, 0))
+
         Dim quit As New Button(vbgame, "Back", New Rectangle(vbgame.width - 60, 10, 50, 20), "Arial Black", 11)
         quit.setColor(Color.FromArgb(0, 0, 0, 0), vbgame.white)
         quit.setTextColor(vbgame.white, Color.FromArgb(0, 0, 0, 0))
@@ -121,6 +135,9 @@ Public Class Form1
                 ElseIf customize.handle(e) = MouseEvent.ButtonRight Then
                     MsgBox(gridwidth & "x" & gridheight & vbCrLf & mines & " mines.")
 
+                ElseIf load.handle(e) = MouseEvent.ButtonLeft Then
+                    gameloop(loadGrid())
+
                 ElseIf quit.handle(e) = MouseEvent.ButtonLeft Then
                     run = False
                 ElseIf guessless.handle(e) = MouseEvent.ButtonLeft Then
@@ -142,6 +159,7 @@ Public Class Form1
             beginner.draw()
             intermediate.draw()
             expert.draw()
+            load.draw()
             quit.draw()
             vbgame.drawText(New Point(guessless.x - 40, guessless.y - 40), "Experimental", vbgame.white, 10, "Arial Black")
             guessless.draw()
@@ -186,7 +204,7 @@ Public Class Form1
                     adjustSize()
                     bg = New MineGrid(side, gridwidth, gridheight, mines, True)
                 ElseIf editorb.handle(e) = MouseEvent.ButtonLeft Then
-                    Editor.ShowDialog()
+                    Me.Invoke(Sub() Editor.Show())
                 ElseIf quit.handle(e) = MouseEvent.ButtonLeft Then
                     End
                 End If
@@ -303,13 +321,16 @@ Public Class Form1
         vbgame.drawText(New Point(tx, gridheight * side), s, vbgame.black, 10, "Arial Black")
     End Sub
 
-    Function gameloop(Optional autosolve As Boolean = False)
+    Function gameloop(Optional minegrid As MineGrid = Nothing, Optional autosolve As Boolean = False)
         Dim run As Boolean = True
-        Dim minegrid As MineGrid
         Dim timer As New Stopwatch
         timer.Start()
 
-        minegrid = getNewGrid()
+        If IsNothing(minegrid) Then
+            minegrid = getNewGrid()
+        Else
+            adjustSize()
+        End If
 
         Dim solver As Solver = New Solver(minegrid)
 

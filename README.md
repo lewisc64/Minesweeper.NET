@@ -15,11 +15,11 @@ This is known to be blocked by Windows SmartScreen. It is not malicious. Feel fr
  - Obnoxiously huge cells
 
 <b>Things this adds:</b>
+ - Custom puzzles and editor
  - Boundless Custom Sizes (Within reason)
  - Solver AI (Generate a game which does not require guessing in near future)
 
 <b>Planned features:</b>
- - Custom puzzles and editor
  - Generation without guessing
  - Win state
  - Mine explosions

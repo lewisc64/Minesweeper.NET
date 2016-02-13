@@ -40,7 +40,6 @@ Public Class MouseEvent
 
 End Class
 
-<System.Serializable()>
 Public Class VBGame
 
     ''' <summary>
@@ -113,8 +112,6 @@ Public Class VBGame
 
         displaycontext = BufferedGraphicsManager.Current
         displaybuffer = displaycontext.Allocate(form.CreateGraphics, form.DisplayRectangle)
-
-        Windows.Forms.Cursor.Position = New Point(width / 2 + form.Location.X, height / 2 + form.Location.Y)
 
     End Sub
 

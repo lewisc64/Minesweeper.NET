@@ -55,9 +55,8 @@ Public Class Form1
         preminegrid = getPreMineGrid()
     End Sub
 
-    Sub mainloop()
+    Sub startmenu()
         Dim run As Boolean = True
-
         Dim preminegrid As MineGrid = getPreMineGrid()
         Dim outcome As outcome
 
@@ -81,13 +80,9 @@ Public Class Form1
         expert.setColor(Color.FromArgb(0, 0, 0, 0), vbgame.white)
         expert.setTextColor(vbgame.white, Color.FromArgb(0, 0, 0, 0))
 
-        Dim quit As New Button(vbgame, "Quit", New Rectangle(vbgame.width - 60, 10, 50, 20), "Arial Black", 11)
+        Dim quit As New Button(vbgame, "Back", New Rectangle(vbgame.width - 60, 10, 50, 20), "Arial Black", 11)
         quit.setColor(Color.FromArgb(0, 0, 0, 0), vbgame.white)
         quit.setTextColor(vbgame.white, Color.FromArgb(0, 0, 0, 0))
-
-        Dim editorb As New Button(vbgame, "Editor", New Rectangle(vbgame.width - 60, 35, 50, 20), "Arial Black", 11)
-        editorb.setColor(Color.FromArgb(0, 0, 0, 0), vbgame.white)
-        editorb.setTextColor(vbgame.white, Color.FromArgb(0, 0, 0, 0))
 
         Dim guessless As New Button(vbgame, "Guessless", New Rectangle(vbgame.width - 60, vbgame.height - 30, 50, 20), "Arial Black")
         guessless.setColor(vbgame.red, vbgame.red)
@@ -95,24 +90,22 @@ Public Class Form1
 
         While run
 
+            quit.x = vbgame.width - 60
+            guessless.x = vbgame.width - 60
+            guessless.y = vbgame.height - 30
+
             For Each e In vbgame.getKeyDownEvents()
                 If e = "R" Then
                     preminegrid = getPreMineGrid()
                 ElseIf e = "Escape" Then
-                    End
+                    run = False
                 End If
             Next
-
-            quit.x = vbgame.width - 60
-            editorb.x = vbgame.width - 60
-            guessless.x = vbgame.width - 60
-            guessless.y = vbgame.height - 30
 
             For Each e In vbgame.getMouseEvents()
 
                 If start.handle(e) = MouseEvent.ButtonLeft Then
-                    outcome = gameloop()
-                    preminegrid = getPreMineGrid(outcome.minegrid)
+                    gameloop()
 
                 ElseIf customize.handle(e) = MouseEvent.ButtonLeft Then
                     custom()
@@ -129,9 +122,7 @@ Public Class Form1
                     MsgBox(gridwidth & "x" & gridheight & vbCrLf & mines & " mines.")
 
                 ElseIf quit.handle(e) = MouseEvent.ButtonLeft Then
-                    End
-                ElseIf editorb.handle(e) = MouseEvent.ButtonLeft Then
-                    Editor.ShowDialog()
+                    run = False
                 ElseIf guessless.handle(e) = MouseEvent.ButtonLeft Then
                     If guesslessgen Then
                         guesslessgen = False
@@ -143,6 +134,7 @@ Public Class Form1
                 End If
 
             Next
+
             preminegrid.drawCells(vbgame)
 
             start.draw()
@@ -151,9 +143,63 @@ Public Class Form1
             intermediate.draw()
             expert.draw()
             quit.draw()
-            editorb.draw()
             vbgame.drawText(New Point(guessless.x - 40, guessless.y - 40), "Experimental", vbgame.white, 10, "Arial Black")
             guessless.draw()
+
+            vbgame.update()
+
+        End While
+    End Sub
+
+    Sub mainloop()
+        Dim run As Boolean = True
+
+        Dim bg As New MineGrid(side, gridwidth, gridheight, mines, True)
+
+        Dim start As New Button(vbgame, "Start", New Rectangle(10, 10, 110, 20), "Arial Black", 11)
+        start.setColor(vbgame.black, vbgame.white)
+        start.setTextColor(vbgame.white, Color.FromArgb(0, 0, 0, 0))
+
+        Dim editorb As New Button(vbgame, "Editor", New Rectangle(10, 35, 110, 20), "Arial Black", 11)
+        editorb.setColor(vbgame.black, vbgame.white)
+        editorb.setTextColor(vbgame.white, Color.FromArgb(0, 0, 0, 0))
+
+        Dim quit As New Button(vbgame, "Quit", New Rectangle(vbgame.width - 60, 10, 50, 20), "Arial Black", 11)
+        quit.setColor(vbgame.black, vbgame.white)
+        quit.setTextColor(vbgame.white, Color.FromArgb(0, 0, 0, 0))
+
+        While run
+
+            For Each e In vbgame.getKeyDownEvents()
+                If e = "Escape" Then
+                    End
+                End If
+            Next
+
+            For Each e In vbgame.getMouseEvents()
+
+                If start.handle(e) = MouseEvent.ButtonLeft Then
+                    startmenu()
+                    gridwidth = 30
+                    gridheight = 16
+                    mines = 99
+                    adjustSize()
+                    bg = New MineGrid(side, gridwidth, gridheight, mines, True)
+                ElseIf editorb.handle(e) = MouseEvent.ButtonLeft Then
+                    Editor.ShowDialog()
+                ElseIf quit.handle(e) = MouseEvent.ButtonLeft Then
+                    End
+                End If
+
+            Next
+
+            bg.drawCells(vbgame)
+
+            start.draw()
+            editorb.draw()
+            quit.draw()
+
+            vbgame.drawCenteredText(vbgame.getRect(), "Minesweeper.NET", vbgame.black, 16, "Arial Black")
 
             vbgame.update()
 

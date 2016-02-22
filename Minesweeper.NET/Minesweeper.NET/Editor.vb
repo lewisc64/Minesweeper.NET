@@ -1,4 +1,4 @@
-﻿Imports System.Threading
+Imports System.Threading
 
 Public Class Editor
 
@@ -51,6 +51,10 @@ Public Class Editor
                     editloop(New MineGrid(side, gridwidth, gridheight, 0, True))
                 ElseIf load.handle(e) = MouseEvent.ButtonLeft Then
                     editloop(Form1.loadGrid())
+                    side = 20
+                    gridwidth = 30
+                    gridheight = 16
+                    adjustSize()
                 End If
             Next
 
@@ -58,6 +62,7 @@ Public Class Editor
             load.draw()
 
             vbgame.update()
+            vbgame.clockTick(30)
 
         End While
 
@@ -68,6 +73,10 @@ Public Class Editor
         Dim save As Integer
         Dim filename As String
         Dim x, y As Integer
+
+        side = grid.side
+        gridwidth = grid.gridwidth
+        gridheight = grid.gridheight
 
         adjustSize()
 
@@ -120,13 +129,17 @@ Public Class Editor
                             Else
                                 grid.startpoint = New Point(-1, -1)
                             End If
-                            End If
+                        End If
 
                     Catch ex As IndexOutOfRangeException
                     End Try
 
                 End If
             Next
+
+            If grid.startpoint.X >= 0 Then
+                dirty.Add(grid.cells(grid.startpoint.X, grid.startpoint.Y))
+            End If
 
             For Each Cell As Cell In dirty
                 vbgame.drawRect(New Rectangle(Cell.x, Cell.y, Cell.side, Cell.side), Color.FromArgb(150, 150, 150))
@@ -139,6 +152,7 @@ Public Class Editor
             End If
 
             vbgame.update()
+            vbgame.clockTick(30)
 
         End While
 

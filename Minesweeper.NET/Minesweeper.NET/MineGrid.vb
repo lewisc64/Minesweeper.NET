@@ -206,17 +206,18 @@ Public Class MineGrid
     End Sub
 
     Public Shared Function load(filename As String) As MineGrid
+        Dim minegrid As MineGrid
         Try
             Dim fs As FileStream = New FileStream(filename, FileMode.Open)
             Dim bf As New BinaryFormatter
-            Dim minegrid As MineGrid
             minegrid = bf.Deserialize(fs)
             fs.Close()
-            Return minegrid
+            fs.Dispose()
         Catch
             MsgBox("Invalid or corrupt file.")
+            minegrid = New MineGrid(20, 10, 10, 0, True)
         End Try
-        Return Nothing
+        Return minegrid
     End Function
 
     Function handleCells(mouse As MouseEvent)

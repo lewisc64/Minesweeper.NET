@@ -165,7 +165,7 @@ Public Class Form1
             guessless.draw()
 
             vbgame.update()
-
+            vbgame.clockTick(30)
         End While
     End Sub
 
@@ -220,7 +220,7 @@ Public Class Form1
             vbgame.drawCenteredText(vbgame.getRect(), "Minesweeper.NET", vbgame.black, 16, "Arial Black")
 
             vbgame.update()
-
+            vbgame.clockTick(30)
         End While
 
     End Sub

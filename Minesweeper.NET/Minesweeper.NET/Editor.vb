@@ -78,6 +78,7 @@ Public Class Editor
 
     Sub editloop(grid As MineGrid)
         Dim run As Boolean = True
+        Dim gridlines As Boolean = True
         Dim save As Integer
         Dim filename As String
         Dim x, y As Integer
@@ -103,6 +104,11 @@ Public Class Editor
             For Each e In vbgame.getKeyDownEvents()
                 If e = "Escape" Then
                     run = False
+                ElseIf e = "G" Then
+                    gridlines = Not gridlines
+                    If Not gridlines Then
+                        grid.drawCells(vbgame)
+                    End If
                 End If
             Next
 
@@ -157,6 +163,15 @@ Public Class Editor
 
             If grid.startpoint.X >= 0 Then
                 vbgame.drawRect(New Rectangle(grid.startpoint.X * grid.side, grid.startpoint.Y * grid.side, grid.side, grid.side), Color.FromArgb(100, 0, 0, 255))
+            End If
+
+            If gridlines Then
+                For x = 1 To gridwidth
+                    vbgame.drawLine(New Point(x * side, 0), New Point(x * side, vbgame.height - 20), vbgame.black)
+                Next
+                For y = 1 To gridheight
+                    vbgame.drawLine(New Point(0, y * side), New Point(vbgame.width, y * side), vbgame.black)
+                Next
             End If
 
             vbgame.update()

@@ -137,7 +137,7 @@ Public Class Editor
                             If grid.startpoint.X >= 0 Then
                                 dirty.Add(grid.cells(grid.startpoint.X, grid.startpoint.Y))
                             End If
-                            If New Point(x, y) <> grid.startpoint Then
+                            If New Point(x, y) <> grid.startpoint And x < grid.gridwidth And y < grid.gridheight Then
                                 grid.startpoint = New Point(x, y)
                                 dirty.Add(grid.cells(x, y))
                             Else

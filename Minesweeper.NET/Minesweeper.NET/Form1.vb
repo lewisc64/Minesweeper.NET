@@ -182,9 +182,15 @@ Public Class Form1
         editorb.setColor(vbgame.black, vbgame.white)
         editorb.setTextColor(vbgame.white, Color.FromArgb(0, 0, 0, 0))
 
+        Dim wiki As New Button(vbgame, "Wiki", New Rectangle(10, 60, 110, 20), "Arial Black", 11)
+        wiki.setColor(vbgame.black, vbgame.white)
+        wiki.setTextColor(vbgame.white, Color.FromArgb(0, 0, 0, 0))
+
         Dim quit As New Button(vbgame, "Quit", New Rectangle(vbgame.width - 60, 10, 50, 20), "Arial Black", 11)
         quit.setColor(vbgame.black, vbgame.white)
         quit.setTextColor(vbgame.white, Color.FromArgb(0, 0, 0, 0))
+
+        Dim github As New Button(vbgame, "", New Rectangle(0, vbgame.height - 20, vbgame.width, 20))
 
         While run
 
@@ -205,6 +211,10 @@ Public Class Form1
                     bg = New MineGrid(side, gridwidth, gridheight, mines, True)
                 ElseIf editorb.handle(e) = MouseEvent.ButtonLeft Then
                     Me.Invoke(Sub() Editor.Show())
+                ElseIf wiki.handle(e) = MouseEvent.ButtonLeft Then
+                    Process.Start("https://github.com/redmechanic/Minesweeper.NET/wiki")
+                ElseIf github.handle(e) = MouseEvent.ButtonLeft Then
+                    Process.Start("https://github.com/redmechanic/Minesweeper.NET")
                 ElseIf quit.handle(e) = MouseEvent.ButtonLeft Then
                     End
                 End If
@@ -215,9 +225,12 @@ Public Class Form1
 
             start.draw()
             editorb.draw()
+            wiki.draw()
             quit.draw()
 
             vbgame.drawCenteredText(vbgame.getRect(), "Minesweeper.NET", vbgame.black, 16, "Arial Black")
+
+            vbgame.drawCenteredText(New Rectangle(0, vbgame.height - 20, vbgame.width, 20), "By redmechanic (https://github.com/redmechanic/Minesweeper.NET)", vbgame.black, 8, "Arial Black")
 
             vbgame.update()
             vbgame.clockTick(30)

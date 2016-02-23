@@ -10,6 +10,7 @@ Public Class Editor
     Dim gridheight As Integer = 16
 
     Private Sub Editor_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Me.ControlBox = False
         adjustSize()
         thread.Start()
     End Sub
@@ -41,6 +42,10 @@ Public Class Editor
         load.setColor(Color.FromArgb(0, 0, 0, 0), vbgame.white)
         load.setTextColor(vbgame.white, Color.FromArgb(0, 0, 0, 0))
 
+        Dim close As New Button(vbgame, "Close", New Rectangle(10, 60, 110, 20), "Arial Black", 11)
+        close.setColor(Color.FromArgb(0, 0, 0, 0), vbgame.white)
+        close.setTextColor(vbgame.white, Color.FromArgb(0, 0, 0, 0))
+
         While run
 
             vbgame.fill(Color.FromArgb(150, 150, 150))
@@ -55,11 +60,14 @@ Public Class Editor
                     gridwidth = 30
                     gridheight = 16
                     adjustSize()
+                ElseIf close.handle(e) = MouseEvent.ButtonLeft Then
+                    Me.Invoke(Sub() Me.Hide())
                 End If
             Next
 
             create.draw()
             load.draw()
+            close.draw()
 
             vbgame.update()
             vbgame.clockTick(30)

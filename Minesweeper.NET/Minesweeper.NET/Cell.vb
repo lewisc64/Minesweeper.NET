@@ -29,10 +29,13 @@ Class Cell
             If number <> 0 Then
                 vbgame.blit(numbers.images(number), getRect())
             End If
-            vbgame.drawRect(getRect(), Color.FromArgb(opacity, 200, 200, 200))
-            vbgame.drawRect(New Rectangle(x + (side / 10), y + (side / 10), side - (side / 10) * 2, side - (side / 10) * 2), Color.FromArgb(opacity, 250, 250, 250))
             If opacity > 0 Then
+                vbgame.drawRect(getRect(), Color.FromArgb(opacity, 200, 200, 200))
+                vbgame.drawRect(New Rectangle(x + (side / 10), y + (side / 10), side - (side / 10) * 2, side - (side / 10) * 2), Color.FromArgb(opacity, 250, 250, 250))
                 opacity -= 65
+                If vbgame.getTime() > 16.6 Then
+                    opacity = 0
+                End If
             End If
             If opacity < 0 Then
                 opacity = 0

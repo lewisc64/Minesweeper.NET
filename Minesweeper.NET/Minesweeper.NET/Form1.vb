@@ -380,7 +380,9 @@ Public Class Form1
             For Each effect In cross.crosses.ToList()
                 If effect.opacity = 0 Then
                     cross.crosses.Remove(effect)
+                    Continue For
                 End If
+
                 effect.handle(vbgame)
             Next
 

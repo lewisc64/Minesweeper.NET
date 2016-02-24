@@ -205,6 +205,10 @@ Public Class VBGame
         fpstimer.Start()
     End Sub
 
+    Function getTime()
+        Return fpstimer.ElapsedMilliseconds
+    End Function
+
     Sub update()
         Try
             displaybuffer.Render()
@@ -265,7 +269,6 @@ Public Class VBGame
 
     Sub drawCenteredText(rect As Rectangle, s As String, color As System.Drawing.Color, Optional fontsize As Single = 16, Optional fontname As String = "Arial")
         Dim font As New System.Drawing.Font(fontname, fontsize)
-        Dim format As New System.Drawing.StringFormat
         TextRenderer.DrawText(displaybuffer.Graphics, s, font, rect, color, color.Empty, TextFormatFlags.VerticalCenter Or TextFormatFlags.HorizontalCenter)
     End Sub
 
@@ -288,15 +291,15 @@ Public Class VBGame
 
     'shape drawing ------------------------------------------------------------------
     Sub drawRect(rect As Rectangle, color As System.Drawing.Color, Optional filled As Boolean = True)
-        Dim pen As New Pen(color)
-        Dim brush As New System.Drawing.SolidBrush(color)
         If filled Then
+            Dim brush As New System.Drawing.SolidBrush(color)
             displaybuffer.Graphics.FillRectangle(brush, rect)
+            brush.Dispose()
         Else
+            Dim pen As New Pen(color)
             displaybuffer.Graphics.DrawRectangle(pen, rect)
+            pen.Dispose()
         End If
-        brush.Dispose()
-        pen.Dispose()
     End Sub
 
     Sub drawCircle(center As Point, radius As Integer, color As System.Drawing.Color, Optional filled As Boolean = True)
@@ -305,15 +308,15 @@ Public Class VBGame
     End Sub
 
     Sub drawEllipse(rect As Rectangle, color As System.Drawing.Color, Optional filled As Boolean = True)
-        Dim pen As New Pen(color)
-        Dim brush As New System.Drawing.SolidBrush(color)
         If filled Then
-            displaybuffer.Graphics.FillEllipse(brush, rect)
+            Dim brush As New System.Drawing.SolidBrush(color)
+            displaybuffer.Graphics.FillEllipse(Brush, rect)
+            Brush.Dispose()
         Else
+            Dim pen As New Pen(color)
             displaybuffer.Graphics.DrawEllipse(pen, rect)
+            pen.Dispose()
         End If
-        brush.Dispose()
-        pen.Dispose()
     End Sub
 
 End Class

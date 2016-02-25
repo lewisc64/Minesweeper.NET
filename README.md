@@ -9,10 +9,10 @@ The goal of this is to make a minesweeper game that gets rid of all the extra ga
 
 This is known to be blocked by Windows SmartScreen. It is not malicious. Feel free to browse through the source code and compile it yourself if you feel that is necessary. 
 
-<b>Things this does not include from Windows 7 minesweeper:</b>
- - Question Marks
+<b>Things this does not include from Windows minesweeper:</b>
+ - Question marks
  - Right click and left click to chord (It is now just right click)
- - Obnoxiously huge cells
+ - Annoyingly small cells (Windows XP minesweeper cells were 16x16, In this cells are 20x20)
 
 <b>Things this adds:</b>
  - Custom puzzles and editor

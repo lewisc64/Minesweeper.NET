@@ -65,6 +65,25 @@ Public Class Form1
         preminegrid = getPreMineGrid()
     End Sub
 
+    Sub wait()
+        vbgame.getKeyDownEvents()
+        vbgame.getKeyUpEvents()
+        vbgame.getMouseEvents()
+        While True
+            For Each e In vbgame.getKeyDownEvents()
+                Exit While
+            Next
+            For Each e In vbgame.getKeyUpEvents()
+                Exit While
+            Next
+            For Each e In vbgame.getMouseEvents()
+                If e.action = MouseEvent.MouseUp Then
+                    Exit While
+                End If
+            Next
+        End While
+    End Sub
+
     Sub startmenu()
         Dim run As Boolean = True
         Dim preminegrid As MineGrid = getPreMineGrid()
@@ -336,6 +355,8 @@ Public Class Form1
 
     Function gameloop(Optional minegrid As MineGrid = Nothing, Optional autosolve As Boolean = False)
         Dim run As Boolean = True
+        Dim outcome As String
+        Dim remaining As Integer
         Dim timer As New Stopwatch
         timer.Start()
 
@@ -366,10 +387,45 @@ Public Class Form1
             Next
 
             For Each e In vbgame.getMouseEvents()
+
                 If e.action = MouseEvent.MouseUp Then
-                    minegrid.handleCells(e)
+
+                    outcome = minegrid.handleCells(e)
+
+                    If outcome = "boom" Then
+
+                        For Each Cell As Cell In minegrid.cells
+                            If Cell.number = -1 Then
+                                Cell.dug = True
+                                Cell.opacity = 0
+                            End If
+                        Next
+                        minegrid.drawCells(vbgame)
+                        vbgame.update()
+                        wait()
+
+                        Return New outcome("boom", minegrid, timer)
+
+                    ElseIf minegrid.flags = minegrid.mines Then
+                        remaining = 0
+                        For Each Cell In minegrid.cells
+                            If Not Cell.dug Then
+                                remaining += 1
+                            End If
+                        Next
+                        If remaining = minegrid.flags Then
+
+                            vbgame.drawCenteredText(vbgame.getRect(), "Clear!", vbgame.black, 16, "Arial Black")
+                            vbgame.update()
+                            wait()
+                            Return New outcome("win", minegrid, timer)
+
+                        End If
+                    End If
+
                 End If
             Next
+
 
             If autosolve Then
                 solver.handle()

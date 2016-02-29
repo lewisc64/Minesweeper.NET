@@ -7,7 +7,7 @@ The wiki is available [here](https://github.com/redmechanic/Minesweeper.NET/wiki
 
 The goal of this is to make a minesweeper game that gets rid of all the extra garbage that no-one really uses. Clean and simple.
 
-This is known to be blocked by Windows SmartScreen. It is not malicious. Feel free to browse through the source code and compile it yourself if you feel that is necessary. 
+This is known to be blocked by Windows SmartScreen. It is not malicious. Feel free to browse through the source code and compile it yourself if you feel that is necessary (clean the build first of course).
 
 <b>Things this does not include from Windows minesweeper:</b>
  - Question marks

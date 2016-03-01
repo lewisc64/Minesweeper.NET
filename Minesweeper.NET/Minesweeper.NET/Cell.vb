@@ -27,7 +27,9 @@ Class Cell
 
         If tdug Then
             If number <> 0 Then
-                vbgame.blit(numbers.images(number), getRect())
+                SyncLock (numbers.images)
+                    vbgame.blit(numbers.images(number), getRect())
+                End SyncLock
             End If
             If opacity > 0 Then
                 vbgame.drawRect(getRect(), Color.FromArgb(opacity, 200, 200, 200))

@@ -155,17 +155,20 @@ Public Class MineGrid
         Return flags
     End Function
 
-    Sub digNine(ByRef cells, x, y)
+    Function digNine(ByRef cells, x, y) As String
         Dim flags As Integer
         flags = countFlags(cells, x, y)
 
         If flags = cells(x, y).number Then
 
-            For Each Cell In getAdjacentCells(x, y)
+            For Each Cell As Cell In getAdjacentCells(x, y)
 
                 If Cell.dug = False And Not Cell.flagged Then
 
                     Cell.dug = True
+                    If Cell.number = -1 Then
+                        Return "boom"
+                    End If
 
                     If Cell.number = 0 Then
                         digNine(cells, Cell.ix, Cell.iy)
@@ -175,7 +178,8 @@ Public Class MineGrid
         Else
             cross.crosses.Add(New cross(cells(x, y).x, cells(x, y).y, cells(x, y).side))
         End If
-    End Sub
+        Return Nothing
+    End Function
 
     Sub drawCells(ByRef vbgame As VBGame)
         Dim x, y As Integer
@@ -231,7 +235,7 @@ Public Class MineGrid
             cmd = cells(x, y).handle(mouse)
 
             If cmd = "dig9" Then
-                digNine(cells, x, y)
+                Return digNine(cells, x, y)
             ElseIf cmd = "boom" Then
                 Return "boom"
             End If

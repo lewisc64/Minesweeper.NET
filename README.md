@@ -1,7 +1,7 @@
 # Minesweeper.NET
 A Minesweeper clone made in VB.NET
 
-<img src="https://www.dropbox.com/s/sqbup9fkapic1g7/screenshot.png?dl=1"></img>
+![](https://www.dropbox.com/s/sqbup9fkapic1g7/screenshot.png?dl=1)
 
 The wiki is available [here](https://github.com/redmechanic/Minesweeper.NET/wiki).
 

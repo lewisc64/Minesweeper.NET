@@ -405,22 +405,24 @@ Public Class Form1
                         wait()
 
                         Return New outcome("boom", minegrid, timer)
+                    End If
 
-                    ElseIf minegrid.flags = minegrid.mines Then
-                        remaining = 0
-                        For Each Cell In minegrid.cells
-                            If Not Cell.dug Then
-                                remaining += 1
-                            End If
-                        Next
-                        If remaining = minegrid.flags Then
-
-                            vbgame.drawCenteredText(vbgame.getRect(), "Clear!", vbgame.black, 16, "Arial Black")
-                            vbgame.update()
-                            wait()
-                            Return New outcome("win", minegrid, timer)
-
+                    remaining = 0
+                    For Each Cell In minegrid.cells
+                        If Not Cell.dug Then
+                            remaining += 1
                         End If
+                    Next
+                    If remaining = minegrid.mines Then
+
+                        minegrid.drawCells(vbgame)
+                        drawInfo(timer, minegrid)
+
+                        vbgame.drawCenteredText(vbgame.getRect(), "Clear!", vbgame.black, 16, "Arial Black")
+                        vbgame.update()
+                        wait()
+                        Return New outcome("win", minegrid, timer)
+
                     End If
 
                 End If

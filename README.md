@@ -21,6 +21,4 @@ This is known to be blocked by Windows SmartScreen. It is not malicious. Feel fr
 
 <b>Planned features:</b>
  - Generation without guessing
- - Win state
- - Mine explosions
- - Sounds
+ - Sounds (maybe)

@@ -36,38 +36,30 @@ Public Class MineGrid
 
     Function getAdjacentCells(x, y)
         Dim tcells As New List(Of Cell)
-        Try
+        If x - 1 >= 0 And y - 1 >= 0 Then
             tcells.Add(cells(x - 1, y - 1))
-        Catch ex As Exception
-        End Try
-        Try
+        End If
+        If x + 1 < gridwidth And y - 1 >= 0 Then
             tcells.Add(cells(x + 1, y - 1))
-        Catch ex As Exception
-        End Try
-        Try
+        End If
+        If x - 1 >= 0 And y + 1 < gridheight Then
             tcells.Add(cells(x - 1, y + 1))
-        Catch ex As Exception
-        End Try
-        Try
+        End If
+        If x + 1 < gridwidth And y + 1 < gridheight Then
             tcells.Add(cells(x + 1, y + 1))
-        Catch ex As Exception
-        End Try
-        Try
+        End If
+        If x - 1 >= 0 And y >= 0 And y < gridheight Then
             tcells.Add(cells(x - 1, y))
-        Catch ex As Exception
-        End Try
-        Try
+        End If
+        If x >= 0 And x < gridwidth And y - 1 >= 0 Then
             tcells.Add(cells(x, y - 1))
-        Catch ex As Exception
-        End Try
-        Try
+        End If
+        If x + 1 < gridwidth And y >= 0 And y < gridheight Then
             tcells.Add(cells(x + 1, y))
-        Catch ex As Exception
-        End Try
-        Try
+        End If
+        If x >= 0 And x < gridwidth And y + 1 < gridheight Then
             tcells.Add(cells(x, y + 1))
-        Catch ex As Exception
-        End Try
+        End If
         Return tcells
     End Function
 
@@ -96,51 +88,57 @@ Public Class MineGrid
         side = sidet
         gridwidth = gridwidtht
         gridheight = gridheightt
-        Dim cellst(gridwidth - 1, gridheight - 1) As Cell
 
-        cells = cellst
-        For x = 0 To gridwidth - 1
-            For y = 0 To gridheight - 1
+        Try
+            Dim cellst(gridwidth - 1, gridheight - 1) As Cell
 
-                cells(x, y) = New Cell(x * side, y * side, side)
-                cells(x, y).ix = x
-                cells(x, y).iy = y
-
-            Next
-        Next
-
-        If Not skipgen Then
-
-            For i = 1 To mines
-                While True
-                    x = random.Next(0, gridwidth)
-                    y = random.Next(0, gridheight)
-                    If cells(x, y).number <> -1 Then
-                        Exit While
-                    End If
-                End While
-                cells(x, y).number = -1
-            Next
-
-            calculateNumbers(cells)
-
-            acted = False
+            cells = cellst
             For x = 0 To gridwidth - 1
                 For y = 0 To gridheight - 1
-                    If cells(x, y).number = 0 Then
-                        cells(x, y).dug = True
-                        digNine(cells, x, y)
-                        acted = True
-                    End If
+
+                    cells(x, y) = New Cell(x * side, y * side, side)
+                    cells(x, y).ix = x
+                    cells(x, y).iy = y
+
+                Next
+            Next
+
+            If Not skipgen Then
+
+                For i = 1 To mines
+                    While True
+                        x = random.Next(0, gridwidth)
+                        y = random.Next(0, gridheight)
+                        If cells(x, y).number <> -1 Then
+                            Exit While
+                        End If
+                    End While
+                    cells(x, y).number = -1
+                Next
+
+                calculateNumbers(cells)
+
+                acted = False
+                For x = 0 To gridwidth - 1
+                    For y = 0 To gridheight - 1
+                        If cells(x, y).number = 0 Then
+                            cells(x, y).dug = True
+                            digNine(cells, x, y)
+                            acted = True
+                        End If
+                        If acted Then
+                            Exit For
+                        End If
+                    Next
                     If acted Then
                         Exit For
                     End If
                 Next
-                If acted Then
-                    Exit For
-                End If
-            Next
-        End If
+            End If
+        Catch ex As System.OverflowException
+            MsgBox("Invalid")
+            cells = New MineGrid(20, 10, 10, 0, True).cells
+        End Try
     End Sub
 
     Function countFlags(ByRef cells, x, y)

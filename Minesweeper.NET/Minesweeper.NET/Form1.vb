@@ -13,6 +13,7 @@ Public Class Form1
     Dim guesslessgen As Boolean = False
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        MaximizeBox = False
         adjustSize()
         numbers.generate(side)
         Me.Icon = Icon.FromHandle(New Bitmap(numbers.images(-1)).GetHicon())

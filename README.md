@@ -19,8 +19,7 @@ This is known to be blocked by Windows SmartScreen. It is not malicious. Feel fr
 <b>Things this adds:</b>
  - Custom puzzles and editor
  - Boundless Custom Sizes (Within reason)
- - Solver AI (Generate a game which does not require guessing in near future)
 
 <b>Planned features:</b>
- - Generation without guessing
+ - Generation without guessing (Implemented, not polished as of yet)
  - Sounds (maybe)

@@ -3,7 +3,7 @@ A Minesweeper clone made in VB.NET
 
 ![](https://www.dropbox.com/s/sqbup9fkapic1g7/screenshot.png?dl=1)
 
-[![Download Latest Release](https://www.dropbox.com/s/wp88v84uqgxae2y/releasebutton.png?dl=1)](https://github.com/redmechanic/Minesweeper.NET/releases/latest)
+[Download latest release.](https://github.com/redmechanic/Minesweeper.NET/releases)
 
 The wiki is available [here](https://github.com/redmechanic/Minesweeper.NET/wiki).
 

@@ -196,6 +196,11 @@ Public Class VBGame
         mouse = e
     End Sub
 
+    Private Sub form_MouseDoubleClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles form.MouseDoubleClick
+        mouseevents.Add(MouseEvent.InterpretFormEvent(e, MouseEvent.actions.up))
+        mouse = e
+    End Sub
+
     Private Sub form_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles form.KeyDown
         keydownevents.Add(e.KeyCode().ToString())
     End Sub
@@ -318,8 +323,8 @@ Public Class VBGame
     Sub drawEllipse(rect As Rectangle, color As System.Drawing.Color, Optional filled As Boolean = True)
         If filled Then
             Dim brush As New System.Drawing.SolidBrush(color)
-            displaybuffer.Graphics.FillEllipse(Brush, rect)
-            Brush.Dispose()
+            displaybuffer.Graphics.FillEllipse(brush, rect)
+            brush.Dispose()
         Else
             Dim pen As New Pen(color)
             displaybuffer.Graphics.DrawEllipse(pen, rect)

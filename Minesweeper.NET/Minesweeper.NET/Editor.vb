@@ -52,16 +52,16 @@ Public Class Editor
             vbgame.fill(Color.FromArgb(150, 150, 150))
 
             For Each e In vbgame.getMouseEvents()
-                If create.handle(e) = MouseEvent.ButtonLeft Then
+                If create.handle(e) = MouseEvent.buttons.left Then
                     custom()
                     editloop(New MineGrid(side, gridwidth, gridheight, 0, True))
-                ElseIf load.handle(e) = MouseEvent.ButtonLeft Then
+                ElseIf load.handle(e) = MouseEvent.buttons.left Then
                     editloop(Form1.loadGrid())
                     side = 20
                     gridwidth = 30
                     gridheight = 16
                     adjustSize()
-                ElseIf close.handle(e) = MouseEvent.ButtonLeft Then
+                ElseIf close.handle(e) = MouseEvent.buttons.left Then
                     Me.Invoke(Sub() Me.Hide())
                 End If
             Next
@@ -114,13 +114,13 @@ Public Class Editor
             Next
 
             For Each e In vbgame.getMouseEvents()
-                If e.action = MouseEvent.MouseUp Then
+                If e.action = MouseEvent.actions.up Then
                     x = Math.Floor(e.location.X / side)
                     y = Math.Floor(e.location.Y / side)
 
                     Try
 
-                        If e.button = MouseEvent.ButtonLeft Then
+                        If e.button = MouseEvent.buttons.left Then
                             If grid.cells(x, y).number = -1 Then
                                 grid.cells(x, y).number = 0
                                 grid.mines -= 1
@@ -134,7 +134,7 @@ Public Class Editor
                             Next
                             dirty.Add(grid.cells(x, y))
 
-                        ElseIf e.button = MouseEvent.ButtonRight Then
+                        ElseIf e.button = MouseEvent.buttons.right Then
                             If grid.startpoint.X >= 0 Then
                                 dirty.Add(grid.cells(grid.startpoint.X, grid.startpoint.Y))
                             End If

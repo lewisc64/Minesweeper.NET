@@ -61,10 +61,10 @@ Class Cell
         If Not dug Then
             clicked = False
 
-            If mouse.button = MouseEvent.ButtonLeft And Not flagged Then
+            If mouse.button = MouseEvent.buttons.left And Not flagged Then
                 clicked = True
 
-            ElseIf mouse.button = MouseEvent.ButtonRight Then
+            ElseIf mouse.button = MouseEvent.buttons.right Then
                 If flagged Then
                     flagged = False
                 Else
@@ -83,7 +83,7 @@ Class Cell
                 End If
             End If
         Else
-            If mouse.button = MouseEvent.ButtonRight Then
+            If mouse.button = MouseEvent.buttons.right Then
                 Return "dig9"
             End If
         End If

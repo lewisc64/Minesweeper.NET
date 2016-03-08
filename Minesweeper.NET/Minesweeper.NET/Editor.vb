@@ -11,6 +11,7 @@ Public Class Editor
 
     Private Sub Editor_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.ControlBox = False
+        MaximizeBox = False
         adjustSize()
         thread.Start()
     End Sub

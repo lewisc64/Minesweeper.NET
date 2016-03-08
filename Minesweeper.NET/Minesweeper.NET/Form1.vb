@@ -78,7 +78,7 @@ Public Class Form1
                 Exit While
             Next
             For Each e In vbgame.getMouseEvents()
-                If e.action = MouseEvent.MouseUp Then
+                If e.action = MouseEvent.actions.up Then
                     Exit While
                 End If
             Next
@@ -88,7 +88,6 @@ Public Class Form1
     Sub startmenu()
         Dim run As Boolean = True
         Dim preminegrid As MineGrid = getPreMineGrid()
-        Dim outcome As outcome
 
         Dim start As New Button(vbgame, "Start", New Rectangle(10, 10, 110, 20), "Arial Black", 11)
         start.setColor(Color.FromArgb(0, 0, 0, 0), vbgame.white)
@@ -138,29 +137,29 @@ Public Class Form1
 
             For Each e In vbgame.getMouseEvents()
 
-                If start.handle(e) = MouseEvent.ButtonLeft Then
+                If start.handle(e) = MouseEvent.buttons.left Then
                     gameloop()
 
-                ElseIf customize.handle(e) = MouseEvent.ButtonLeft Then
+                ElseIf customize.handle(e) = MouseEvent.buttons.left Then
                     custom()
                     preminegrid = getPreMineGrid()
 
-                ElseIf beginner.handle(e) = MouseEvent.ButtonLeft Then
+                ElseIf beginner.handle(e) = MouseEvent.buttons.left Then
                     setAll(preminegrid, 9, 9, 10)
-                ElseIf intermediate.handle(e) = MouseEvent.ButtonLeft Then
+                ElseIf intermediate.handle(e) = MouseEvent.buttons.left Then
                     setAll(preminegrid, 16, 16, 40)
-                ElseIf expert.handle(e) = MouseEvent.ButtonLeft Then
+                ElseIf expert.handle(e) = MouseEvent.buttons.left Then
                     setAll(preminegrid, 30, 16, 99)
 
-                ElseIf customize.handle(e) = MouseEvent.ButtonRight Then
+                ElseIf customize.handle(e) = MouseEvent.buttons.right Then
                     MsgBox(gridwidth & "x" & gridheight & vbCrLf & mines & " mines.")
 
-                ElseIf load.handle(e) = MouseEvent.ButtonLeft Then
+                ElseIf load.handle(e) = MouseEvent.buttons.left Then
                     gameloop(loadGrid())
 
-                ElseIf quit.handle(e) = MouseEvent.ButtonLeft Then
+                ElseIf quit.handle(e) = MouseEvent.buttons.left Then
                     run = False
-                ElseIf guessless.handle(e) = MouseEvent.ButtonLeft Then
+                ElseIf guessless.handle(e) = MouseEvent.buttons.left Then
                     If guesslessgen Then
                         guesslessgen = False
                         guessless.setColor(vbgame.red, vbgame.red)
@@ -222,20 +221,20 @@ Public Class Form1
 
             For Each e In vbgame.getMouseEvents()
 
-                If start.handle(e) = MouseEvent.ButtonLeft Then
+                If start.handle(e) = MouseEvent.buttons.left Then
                     startmenu()
                     gridwidth = 30
                     gridheight = 16
                     mines = 99
                     adjustSize()
                     bg = New MineGrid(side, gridwidth, gridheight, mines, True)
-                ElseIf editorb.handle(e) = MouseEvent.ButtonLeft Then
+                ElseIf editorb.handle(e) = MouseEvent.buttons.left Then
                     Me.Invoke(Sub() Editor.Show())
-                ElseIf wiki.handle(e) = MouseEvent.ButtonLeft Then
+                ElseIf wiki.handle(e) = MouseEvent.buttons.left Then
                     Process.Start("https://github.com/redmechanic/Minesweeper.NET/wiki")
-                ElseIf github.handle(e) = MouseEvent.ButtonLeft Then
+                ElseIf github.handle(e) = MouseEvent.buttons.left Then
                     Process.Start("https://github.com/redmechanic/Minesweeper.NET")
-                ElseIf quit.handle(e) = MouseEvent.ButtonLeft Then
+                ElseIf quit.handle(e) = MouseEvent.buttons.left Then
                     End
                 End If
 
@@ -389,7 +388,7 @@ Public Class Form1
 
             For Each e In vbgame.getMouseEvents()
 
-                If e.action = MouseEvent.MouseUp Then
+                If e.action = MouseEvent.actions.up Then
 
                     outcome = minegrid.handleCells(e)
 

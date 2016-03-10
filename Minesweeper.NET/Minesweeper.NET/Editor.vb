@@ -124,11 +124,24 @@ Public Class Editor
                             If grid.cells(x, y).number = -1 Then
                                 grid.cells(x, y).number = 0
                                 grid.mines -= 1
+                                For Each Cell In grid.getAdjacentCells(x, y)
+                                    If Cell.number > 0 Then
+                                        Cell.number -= 1
+                                    ElseIf Cell.number = -1 Then
+                                        grid.cells(x, y).number += 1
+                                    End If
+                                Next
+
                             Else
                                 grid.cells(x, y).number = -1
                                 grid.mines += 1
+                                For Each Cell In grid.getAdjacentCells(x, y)
+                                    If Cell.number <> -1 Then
+                                        Cell.number += 1
+                                    End If
+                                Next
                             End If
-                            grid.calculateNumbers(grid.cells)
+
                             For Each Cell As Cell In grid.getAdjacentCells(x, y)
                                 dirty.Add(Cell)
                             Next

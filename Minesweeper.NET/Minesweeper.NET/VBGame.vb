@@ -41,7 +41,11 @@ Public Class MouseEvent
                 button = buttons.middle
             End If
         ElseIf action = actions.scroll Then
-            'DO SHIT HERE
+            If e.Delta > 0 Then
+                button = buttons.scrollUp
+            ElseIf e.Delta < 0 Then
+                button = buttons.scrollDown
+            End If
         End If
         Return New MouseEvent(e.Location, action, button)
     End Function
@@ -178,6 +182,7 @@ Public Class VBGame
     End Function
 
     Private Sub form_MouseWheel(ByVal sender As Object, ByVal e As MouseEventArgs) Handles form.MouseWheel
+        mouseevents.Add(MouseEvent.InterpretFormEvent(e, MouseEvent.actions.scroll))
         mouse = e
     End Sub
 

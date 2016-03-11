@@ -97,6 +97,7 @@ Public Class MineGrid
                 For y = 0 To gridheight - 1
 
                     cells(x, y) = New Cell(x * side, y * side, side)
+                    cells(x, y).marked = True
                     cells(x, y).ix = x
                     cells(x, y).iy = y
 
@@ -164,6 +165,7 @@ Public Class MineGrid
                 If Cell.dug = False And Not Cell.flagged Then
 
                     Cell.dug = True
+                    Cell.marked = True
                     If Cell.number = -1 Then
                         Return "boom"
                     End If
@@ -179,10 +181,12 @@ Public Class MineGrid
         Return Nothing
     End Function
 
-    Sub drawCells(ByRef vbgame As VBGame)
+    Sub drawCells(ByRef vbgame As VBGame, Optional drawold As Boolean = True)
         Dim x, y As Integer
 
-        vbgame.fill(Color.FromArgb(150, 150, 150))
+        If drawold Then
+            vbgame.fill(Color.FromArgb(150, 150, 150))
+        End If
 
         flags = 0
 
@@ -193,7 +197,10 @@ Public Class MineGrid
                     flags += 1
                 End If
 
-                cells(x, y).draw(cells(x, y).dug, vbgame)
+                If drawold Or (cells(x, y).Opacity <> 0 And cells(x, y).opacity <> 255) Or cells(x, y).marked Then
+                    cells(x, y).marked = False
+                    cells(x, y).draw(cells(x, y).dug, vbgame)
+                End If
 
                 'vbgame.drawCenteredText(New Rectangle(cells(x, y).x, cells(x, y).y, cells(x, y).side, cells(x, y).side), Math.Round(cells(x, y).probability, 2), vbgame.black, 8)
             Next

@@ -338,6 +338,9 @@ Public Class Form1
     Sub drawInfo(timer As Stopwatch, minegrid As MineGrid)
         Dim tx As Integer
         Dim s As String
+
+        vbgame.drawRect(New Rectangle(0, vbgame.height - 20, vbgame.width, vbgame.height), Color.FromArgb(150, 150, 150))
+
         vbgame.drawText(New Point(0, gridheight * side), Math.Round(timer.ElapsedMilliseconds() / 1000, 2) & "s", vbgame.white, 10, "Arial Black")
 
         tx = vbgame.width / 2
@@ -433,13 +436,15 @@ Public Class Form1
                 solver.handle()
             End If
 
-            minegrid.drawCells(vbgame)
+            minegrid.drawCells(vbgame, False)
 
-            For Each effect In cross.crosses.ToList()
+            For Each effect As cross In cross.crosses.ToList()
                 If effect.opacity = 0 Then
                     cross.crosses.Remove(effect)
                     Continue For
                 End If
+
+                minegrid.cells(effect.x / side, effect.y / side).marked = True
 
                 effect.handle(vbgame)
             Next

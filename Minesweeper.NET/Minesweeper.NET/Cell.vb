@@ -7,6 +7,7 @@ Class Cell
     Public dug As Boolean = False
     Public opacity As Integer = 255
     Public probability As Double 'Used by solver
+    Public marked As Boolean
 
     Sub New(Optional xt As Integer = 0, Optional yt As Integer = 0, Optional sidet As Integer = 10)
 
@@ -26,12 +27,14 @@ Class Cell
         End If
 
         If tdug Then
+            vbgame.drawRect(getRect(), Color.FromArgb(150, 150, 150))
             If number <> 0 Then
                 SyncLock (numbers.images)
                     vbgame.blit(numbers.images(number), getRect())
                 End SyncLock
             End If
             If opacity > 0 Then
+                marked = True
                 vbgame.drawRect(getRect(), Color.FromArgb(opacity, 200, 200, 200))
                 vbgame.drawRect(New Rectangle(x + (side / 10), y + (side / 10), side - (side / 10) * 2, side - (side / 10) * 2), Color.FromArgb(opacity, 250, 250, 250))
                 opacity -= 65
@@ -65,6 +68,7 @@ Class Cell
                 clicked = True
 
             ElseIf mouse.button = MouseEvent.buttons.right Then
+                marked = True
                 If flagged Then
                     flagged = False
                 Else
@@ -73,6 +77,7 @@ Class Cell
             End If
 
             If clicked Then
+                marked = True
                 dug = True
                 If number = -1 Then
                     Return "boom"

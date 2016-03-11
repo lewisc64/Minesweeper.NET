@@ -197,7 +197,7 @@ Public Class MineGrid
                     flags += 1
                 End If
 
-                If drawold Or (cells(x, y).Opacity <> 0 And cells(x, y).opacity <> 255) Or cells(x, y).marked Then
+                If drawold Or cells(x, y).marked Then
                     cells(x, y).marked = False
                     cells(x, y).draw(cells(x, y).dug, vbgame)
                 End If

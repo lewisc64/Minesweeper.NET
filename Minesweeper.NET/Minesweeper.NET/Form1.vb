@@ -371,6 +371,8 @@ Public Class Form1
 
         Dim solver As Solver = New Solver(minegrid)
 
+        minegrid.drawCells(vbgame)
+
         While run
 
             For Each e In vbgame.getKeyDownEvents()
